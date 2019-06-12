@@ -26,6 +26,11 @@ namespace esport.Controllers
             });
         }
 
+        public class UpcomingGames
+        {
+
+        }
+
         public class WeatherForecast
         {
             public string DateFormatted { get; set; }

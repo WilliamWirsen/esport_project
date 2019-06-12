@@ -1,0 +1,32 @@
+.navbar {
+  background-color:#41AC96;
+  margin: 0;
+  border-radius: 0;
+  height: 5rem;
+  color: #fff;
+}
+.row {
+  height: inherit;
+  display: flex;
+  align-items: center;
+}
+.navbar-search-bar input {
+  background-color: #58B6A3;
+  border: none;
+}
+.navbar-search-bar ::placeholder {
+  color: #fff;
+  opacity: 0.8;
+}
+.navbar-user-wrapper ul {
+  display: inline-flex;
+  align-items: center;
+  list-style: none;
+  margin:0;
+}
+.navbar-user-wrapper li {
+  margin-left: 5rem;
+}
+.navbar-user-wrapper img {
+  max-height: 40px;
+}
