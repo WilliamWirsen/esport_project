@@ -12,3 +12,42 @@
   <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
 </ul>
 <p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+
+
+<p *ngIf="!matches"><em>Loading...</em></p>
+
+<table class='table' *ngIf="matches">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>name</th>
+      <th>league</th>
+      <th>videogame</th>
+      <th>startDate</th>
+      <th>draw</th>
+      <th>match type</th>
+      <th>number of games</th>
+      <th>tournament</th>
+      <th>opponentOne</th>
+      <th>opponentTwo</th>
+      <th>prize pool</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let match of matches">
+      <td>{{ match.id }}</td>
+      <td>{{ match.name }}</td>
+      <td>{{ match.league.name }}</td>
+      <td>{{ match.league.videogame }}</td>
+      <td>{{ match.startDate }}</td>
+      <td>{{ match.draw }}</td>
+      <td>{{ match.matchType }}</td>
+      <td>{{ match.numberOfGames }}</td>
+      <td>{{ match.tournament }}</td>
+      <td>{{ match.opponentOne.name }}</td>
+      <td>{{ match.opponentTwo.name }}</td>
+      <td>{{ match.series.prizepool }}</td>
+    </tr>
+  </tbody>
+</table>
+
