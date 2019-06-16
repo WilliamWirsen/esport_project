@@ -6,40 +6,37 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 
 export class HomeComponent {
   public matches: Matches[];
+  public leagues: Leagues[];
+  today: number = Date.now();
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
       this.matches = result;
       console.log(this.matches);
+
     }, error => console.error(error));
+
+    http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagues').subscribe(result => {
+      this.leagues = result;
+      console.log(this.leagues);
+    }, error => console.error(error));
+
   }
-  public ngOnInit() {
-    $(document).ready(function () {
-      //GetUpcomingGames();
-      console.log(this.matches);
-    })
-  }
-}
-function GetUpcomingGames() {
-  $.ajax({
-    url: '/api/SampleData/GetMatches',
-    type: "GET",
-    contentType: "application/json;charset=utf-8",
-    dataType: "json",
-    success: function (result) {
-      this.matches = result;
-      console.log(this.matches);
-    },
-    error: function (error) {
-      console.log(JSON.stringify(error));
-    }
-  });
 }
 
+
+interface Leagues {
+  id: number;
+  imgUrl: string;
+  name: string;
+  slug: string;
+  videogame: string;
+}
 
 interface Matches {
   id: number;

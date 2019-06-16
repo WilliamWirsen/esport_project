@@ -11,7 +11,9 @@ namespace esport.Models
         public int ID { get; set; }
         public string imgUrl { get; set; }
         public string name { get; set; }
+        public string slug { get; set; }
         public string url { get; set; }
         public string videogame { get; set; }
+
     }
 }

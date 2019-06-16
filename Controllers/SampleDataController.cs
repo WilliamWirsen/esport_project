@@ -40,7 +40,7 @@ namespace esport.Controllers
             var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token=" + token);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-
+            System.Diagnostics.Debug.WriteLine(response);
             if (response.IsSuccessful)
             {
                 var content = JsonConvert.DeserializeObject<JToken>(response.Content);
@@ -62,6 +62,7 @@ namespace esport.Controllers
                         ID = (int)item["league"]["id"],
                         imgUrl = (string)item["league"]["image_url"],
                         name = (string)item["league"]["name"],
+                        slug = (string)item["videogame"]["slug"],
                         url = (string)item["league"]["url"],
                         videogame = (string)item["videogame"]["name"]
                     };
@@ -108,6 +109,38 @@ namespace esport.Controllers
                 }
 
                 return Ok(upcomingGames);
+
+            }
+            System.Diagnostics.Debug.WriteLine("Connection not possible");
+            return null;
+
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetLeagues()
+        {
+            var client = new RestClient($"https://api.pandascore.co//leagues?per_page=100&token=" + token);
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                var content = JsonConvert.DeserializeObject<JToken>(response.Content);
+                List<League> leagues = new List<League>();
+                foreach (var item in content)
+                {
+                    var league = new League
+                    {
+                        ID = (int)item["id"],
+                        imgUrl = (string)item["image_url"],
+                        name = (string)item["name"],
+                        slug = (string)item["videogame"]["slug"],
+                        url = (string)item["url"],
+                        videogame = (string)item["videogame"]["name"]
+                    };
+                    leagues.Add(league);
+                }
+                return Ok(leagues);
 
             }
             System.Diagnostics.Debug.WriteLine("Connection not possible");

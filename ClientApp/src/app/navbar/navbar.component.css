@@ -4,6 +4,15 @@
   border-radius: 0;
   height: 5rem;
   color: #fff;
+  
+}
+
+/* Keep the nav menu independent of scrolling and on top of other items */
+.navbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }
 .row {
   height: inherit;

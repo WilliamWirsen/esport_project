@@ -14,13 +14,100 @@
 <p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
 
 
+<div class="container">
+  <div class="row">
+    <div class="schedule col-sm-12">
+      <div class="overwatch-header">
+        <img class="game-logo" src="../../assets/overwatch_icon.png" alt="Overwatch logo" /><span>Overwatch</span>
+      </div>
+      <div class="schedule-body">
+        <ng-container *ngFor="let league of leagues">
+          <div class="league-header" *ngIf="league.videogame === 'Overwatch'"><img class="league-logo" src="{{league.imgUrl}}" alt="{{league.name}}" /><span>{{league.name}}</span></div>
+          <ng-container *ngFor="let match of matches">
+            <ng-container *ngIf="match.league.name == league.name && league.videogame == 'Overwatch'">
+              <div class="match-schedule">
+                <div class="game-schedule-container">
+                  <div class="row">
+                    <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                    <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                    <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <div class="schedule col-sm-12">
+      <div class="dota-header">
+        <img class="game-logo" src="../../assets/league-of-legends.png" alt="League of legends" /><span>League of Legends</span>
+      </div>
+      <div class="schedule-body">
+        <ng-container *ngFor="let league of leagues">
+          <div class="league-header" *ngIf="league.videogame === 'LoL'"><img class="league-logo" src="{{league.imgUrl}}" alt="Alternate Text" /><span>{{league.name}}</span></div>
+          <ng-container *ngFor="let match of matches">
+            <ng-container *ngIf="match.league.name == league.name && league.videogame == 'LoL'">
+              <div class="match-schedule">
+                <div class="game-schedule-container">
+                  <div class="row">
+                    <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                    <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                    <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<table class="table" *ngIf="leagues">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>url</th>
+      <th>name</th>
+      <th>slug</th>
+      <th>videogame</th>
+    </tr>
+  </thead>
+  <tr *ngFor="let league of leagues">
+    <td>{{league.id}}</td>
+    <td>{{league.url}}</td>
+    <td>{{league.name}}</td>
+    <td>{{league.slug}}</td>
+    <td>{{league.videogame}}</td>
+  </tr>
+</table>
+
+
+<ng-container *ngFor="let match of matches">
+  <ng-container *ngIf="match.league.name == 'Overwatch League'">
+    <div class="overwatch-league-match-schedule">
+      <span class="match-opponent">{{match.opponentOne.name}}</span>
+      <span class="scheduled-start">{{match.startDate}}</span>
+      <span class="match-opponent">{{match.opponentTwo.name}}</span>
+    </div>
+  </ng-container>
+</ng-container>
+
+
+
+
 <p *ngIf="!matches"><em>Loading...</em></p>
 
-<table class='table' *ngIf="matches">
+<table class='table table-striped' *ngIf="matches">
   <thead>
     <tr>
       <th>Id</th>
       <th>name</th>
+      <th>logo</th>
       <th>league</th>
       <th>videogame</th>
       <th>startDate</th>
@@ -28,15 +115,16 @@
       <th>match type</th>
       <th>number of games</th>
       <th>tournament</th>
-      <th>opponentOne</th>
-      <th>opponentTwo</th>
+      <th>Team 1</th>
+      <th>Team 2</th>
       <th>prize pool</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let match of matches">
-      <td>{{ match.id }}</td>
+      <td ng-if="match.league.id == 545784">{{ match.id }}</td>
       <td>{{ match.name }}</td>
+      <td><img class="league-logo img-fluid" src="{{match.league.imgUrl}}" alt="{{match.league.name}}" /></td>
       <td>{{ match.league.name }}</td>
       <td>{{ match.league.videogame }}</td>
       <td>{{ match.startDate }}</td>

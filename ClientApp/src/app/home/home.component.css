@@ -1,0 +1,48 @@
+.game-logo { max-width: 38px; }
+.league-logo { max-width: 35px;}
+.overwatch-header, .dota-header {
+  display: flex;
+  flex-direction:row;
+  flex-wrap: nowrap;
+  justify-content:flex-start;
+  background-color: #f8f8f8;
+  padding: 2rem;
+}
+.overwatch-header span, .dota-header span {
+  margin-left: 3rem;
+  align-self:center;
+  font-size: x-large;
+}
+.schedule {
+  display: flex;
+  flex-direction: column;
+}
+.match-schedule {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  border-bottom:1px solid #f8f8f8;
+  padding: 2rem;
+}
+.game-schedule-container {
+  width: 100%;
+}
+.match-schedule .row {
+  width: 100%;
+}
+.match-opponent {
+  font-size: 1.3rem;
+  color: #808080; 
+  text-transform: uppercase;
+  font-weight: 550;
+}
+.league-header {
+  background-color: #e6e6e6;
+  padding: 0.8rem;
+  font-size:small;
+}
+.schedule-body {
+  align-self: flex-end;
+  width: 90%;
+}
+
