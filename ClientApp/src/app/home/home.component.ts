@@ -12,13 +12,13 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent {
   public matches: Matches[];
   public leagues: Leagues[];
+  public games: Games[];
   today: number = Date.now();
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
       this.matches = result;
       console.log(this.matches);
-
     }, error => console.error(error));
 
     http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagues').subscribe(result => {
@@ -26,10 +26,47 @@ export class HomeComponent {
       console.log(this.leagues);
     }, error => console.error(error));
 
+    this.games = [
+      {
+        id: "overwatch",
+        name: "Overwatch",
+        slug: "Overwatch",
+        img: "../../assets/overwatch_icon.png"
+      },
+      {
+        id: "league-of-legends",
+        name: "League of Legends",
+        slug: "LoL",
+        img: "../../assets/league-of-legends.png"
+      },
+      {
+        id: "dota-2",
+        name: "Dota 2",
+        slug: "Dota 2",
+        img: "../../assets/dota2.png"
+      },
+      {
+        id: "CS_GO",
+        name: "Counter Strike: Global Offensive",
+        slug: "CS:GO",
+        img: "../../assets/csgo-icon-6.png"
+      }
+    ]
+  }
+  ngOnInit() {
+    $(document).ready(function () {
+      console.log($('.matches-schedule > .match-schedule').length);
+    });
   }
 }
 
 
+interface Games {
+  id: string;
+  name: string;
+  slug: string;
+  img: string;
+}
 interface Leagues {
   id: number;
   imgUrl: string;

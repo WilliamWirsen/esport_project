@@ -1,6 +1,6 @@
 .game-logo { max-width: 38px; }
 .league-logo { max-width: 35px;}
-.overwatch-header, .dota-header {
+.game-header {
   display: flex;
   flex-direction:row;
   flex-wrap: nowrap;
@@ -8,7 +8,7 @@
   background-color: #f8f8f8;
   padding: 2rem;
 }
-.overwatch-header span, .dota-header span {
+.game-header span {
   margin-left: 3rem;
   align-self:center;
   font-size: x-large;
@@ -40,6 +40,12 @@
   background-color: #e6e6e6;
   padding: 0.8rem;
   font-size:small;
+  display: flex;
+  margin-bottom: 1rem;
+}
+.league-header span {
+  margin-left: 1rem;
+  align-self: center;
 }
 .schedule-body {
   align-self: flex-end;
