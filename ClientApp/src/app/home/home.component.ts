@@ -13,6 +13,7 @@ export class HomeComponent {
   public matches: Matches[];
   public leagues: Leagues[];
   public games: Games[];
+  public liveGames: LiveGames[];
   today: number = Date.now();
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -24,6 +25,11 @@ export class HomeComponent {
     http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagues').subscribe(result => {
       this.leagues = result;
       console.log(this.leagues);
+    }, error => console.error(error));
+
+    http.get<LiveGames[]>(baseUrl + 'api/SampleData/GetLiveMatches').subscribe(result => {
+      this.liveGames = result;
+      console.log(this.liveGames);
     }, error => console.error(error));
 
     this.games = [
@@ -55,12 +61,28 @@ export class HomeComponent {
   }
   ngOnInit() {
     $(document).ready(function () {
-      console.log($('.matches-schedule > .match-schedule').length);
+
     });
   }
 }
 
-
+interface LiveGames {
+  id: number;
+  startDate: string;
+  name: string;  
+  is_active: boolean;
+  match_type: string;
+  stream_url: string;
+  draw: false;
+  forfeit: boolean;
+  opponentOne: object;
+  opponentTwo: object;
+  league: object;
+  opponentOneResult: number;
+  opponentTwoResult: number;
+  season: string;
+  numberOfGames: number;
+}
 interface Games {
   id: string;
   name: string;
