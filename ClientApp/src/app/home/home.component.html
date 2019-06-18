@@ -1,143 +1,147 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+<main class="main-body">
 
-
-<table class="table table-striped" *ngIf="liveGames">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>startdatum</th>
-      <th>name</th>
-      <th>är aktiv</th>
-      <th>matchtyp</th>
-      <th>stream url</th>
-      <th>oavgjort</th>
-      <th>kastad</th>
-      <th>resultat (lag 1)</th>
-      <th>resultat (lag 2)</th>
-      <th>säsong</th>
-      <th>antal matcher</th>
-    </tr>
-  </thead>
-  <tr *ngFor="let live of liveGames">
-    <td>{{live.id}}</td>
-    <td>{{live.startDate}}</td>
-    <td>{{live.name}}</td>
-    <td>{{live.isActive}}</td>
-    <td>{{live.matchType}}</td>
-    <td>{{live.streamUrl}}</td>
-    <td>{{live.draw}}</td>
-    <td>{{live.forfeit}}</td>
-    <td>{{live.opponentOneResult}}</td>
-    <td>{{live.opponentTwoResult}}</td>
-    <td>{{live.season}}</td>
-    <td>{{live.numberOfGames}}</td>
-  </tr>
-</table>
-
-
-
-<div class="container">
+  <h1 style="text-align: center;">Live right now!</h1>
   <div class="row">
-    <ng-container *ngFor="let game of games">
-      <div id="{{game.id}} " class="schedule col-sm-12" *ngIf="games">
-        <div class="game-header">
-          <img class="game-logo" src="{{game.img}}" alt="{{game.name}} logo" /><span>{{game.name}}</span>
-        </div>
-        <div class="schedule-body">
-          <ng-container *ngFor="let league of leagues">
-            <div class="league-wrapper">
-              <div class="league-header" *ngIf="league.videogame === game.slug && league.imgUrl !== null">
-                <img class="league-logo" src="{{league.imgUrl}}" alt="{{league.name}}" />
-                <span>{{league.name}}</span>
-              </div>
-              <div class="matches-schedule">
-                <ng-container *ngFor="let match of matches">
-                  <ng-container *ngIf="match.league.name == league.name && league.videogame == game.slug">
-                    <div class="match-schedule">
-                      <div class="game-schedule-container">
-                        <div class="row">
-                          <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
-                          <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
-                          <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-container>
-                </ng-container>
+    <div class="live-cards-container">
+      <ng-container *ngFor="let live of liveGames">
+        <article class="live-card col-sm-3" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+          <a class="live-stream-link" href="{{live.streamUrl !== null ? live.streamUrl : '#'}}">
+            <div class="match-wrapper">
+              <span *ngIf="live.status !== 'finished'" class="live-icon"></span>
+              <div class="live-match-container">
+                <div class="opponent-one-details">
+                  <img class="team-live-icon" src="{{live.opponentOne.imgUrl}}" alt="{{live.opponentOne.name}}" />
+                  <span>{{live.opponentOne.name}}</span>
+                </div>
+                <div class="live-match-details">
+                  <span>{{live.name}}</span>
+                  <span class="live-result">{{live.opponentOneResult}} - {{live.opponentTwoResult}}</span>
+                  <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
+                  <span class="live-begin-date">{{live.startDate | date: 'shortTime'}}</span>
+                  <span class="live-status" *ngIf="live.isActive">Running</span>
+                  <span class="not-live-status" *ngIf="!live.isActive">Not running</span>
+                </div>
+                <div class="opponent-two-details">
+                  <img class="team-live-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
+                  <span>{{live.opponentTwo.name}}</span>
+                </div>
               </div>
             </div>
-          </ng-container>
-        </div>
-      </div>
-    </ng-container>
-  </div>
-</div>
+          </a>
+        </article>
 
-
-
-
-<ng-container *ngFor="let match of matches">
-  <ng-container *ngIf="match.league.name == 'Overwatch League'">
-    <div class="overwatch-league-match-schedule">
-      <span class="match-opponent">{{match.opponentOne.name}}</span>
-      <span class="scheduled-start">{{match.startDate}}</span>
-      <span class="match-opponent">{{match.opponentTwo.name}}</span>
+      </ng-container>
     </div>
-  </ng-container>
-</ng-container>
+  </div>
+  <div class="container">
+    <table class="table table-striped" *ngIf="liveGames">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>startdatum</th>
+          <th>name</th>
+          <th>är aktiv</th>
+          <th>matchtyp</th>
+          <th>stream url</th>
+          <th>oavgjort</th>
+          <th>kastad</th>
+          <th>resultat (lag 1)</th>
+          <th>resultat (lag 2)</th>
+          <th>säsong</th>
+          <th>antal matcher</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let live of liveGames">
+        <td>{{live.id}}</td>
+        <td>{{live.startDate}}</td>
+        <td>{{live.name}}</td>
+        <td>{{live.isActive}}</td>
+        <td>{{live.matchType}}</td>
+        <td>{{live.streamUrl}}</td>
+        <td>{{live.draw}}</td>
+        <td>{{live.forfeit}}</td>
+        <td>{{live.opponentOneResult}}</td>
+        <td>{{live.opponentTwoResult}}</td>
+        <td>{{live.season}}</td>
+        <td>{{live.numberOfGames}}</td>
+      </tr>
+    </table>
 
 
 
 
-<p *ngIf="!matches"><em>Loading...</em></p>
+    <div class="row">
+      <ng-container *ngFor="let game of games">
+        <div id="{{game.id}} " class="schedule col-sm-12" *ngIf="games">
+          <div class="game-header">
+            <img class="game-logo" src="{{game.img}}" alt="{{game.name}} logo" /><span>{{game.name}}</span>
+          </div>
+          <div class="schedule-body">
+            <ng-container *ngFor="let league of leagues">
+              <div class="league-wrapper">
+                <div class="league-header" *ngIf="league.videogame === game.slug && league.imgUrl !== null">
+                  <img class="league-logo" src="{{league.imgUrl}}" alt="{{league.name}}" />
+                  <span>{{league.name}}</span>
+                </div>
+                <div class="matches-schedule">
+                  <ng-container *ngFor="let match of matches">
+                    <ng-container *ngIf="match.league.name == league.name && league.videogame == game.slug">
+                      <div class="match-schedule">
+                        <div class="game-schedule-container">
+                          <div class="row">
+                            <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                            <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                            <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 
-<table class='table table-striped' *ngIf="matches">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>name</th>
-      <th>logo</th>
-      <th>league</th>
-      <th>videogame</th>
-      <th>startDate</th>
-      <th>draw</th>
-      <th>match type</th>
-      <th>number of games</th>
-      <th>tournament</th>
-      <th>Team 1</th>
-      <th>Team 2</th>
-      <th>prize pool</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let match of matches">
-      <td ng-if="match.league.id == 545784">{{ match.id }}</td>
-      <td>{{ match.name }}</td>
-      <td><img class="league-logo img-fluid" src="{{match.league.imgUrl}}" alt="{{match.league.name}}" /></td>
-      <td>{{ match.league.name }}</td>
-      <td>{{ match.league.videogame }}</td>
-      <td>{{ match.startDate }}</td>
-      <td>{{ match.draw }}</td>
-      <td>{{ match.matchType }}</td>
-      <td>{{ match.numberOfGames }}</td>
-      <td>{{ match.tournament }}</td>
-      <td>{{ match.opponentOne.name }}</td>
-      <td>{{ match.opponentTwo.name }}</td>
-      <td>{{ match.series.prizepool }}</td>
-    </tr>
-  </tbody>
-</table>
+  <p *ngIf="!matches"><em>Loading...</em></p>
 
+  <table class='table table-striped' *ngIf="matches">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>name</th>
+        <th>logo</th>
+        <th>league</th>
+        <th>videogame</th>
+        <th>startDate</th>
+        <th>draw</th>
+        <th>match type</th>
+        <th>number of games</th>
+        <th>tournament</th>
+        <th>Team 1</th>
+        <th>Team 2</th>
+        <th>prize pool</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let match of matches">
+        <td ng-if="match.league.id == 545784">{{ match.id }}</td>
+        <td>{{ match.name }}</td>
+        <td><img class="league-logo img-fluid" src="{{match.league.imgUrl}}" alt="{{match.league.name}}" /></td>
+        <td>{{ match.league.name }}</td>
+        <td>{{ match.league.videogame }}</td>
+        <td>{{ match.startDate }}</td>
+        <td>{{ match.draw }}</td>
+        <td>{{ match.matchType }}</td>
+        <td>{{ match.numberOfGames }}</td>
+        <td>{{ match.tournament }}</td>
+        <td>{{ match.opponentOne.name }}</td>
+        <td>{{ match.opponentTwo.name }}</td>
+        <td>{{ match.series.prizepool }}</td>
+      </tr>
+    </tbody>
+  </table>
+</main>

@@ -82,6 +82,7 @@ interface LiveGames {
   opponentTwoResult: number;
   season: string;
   numberOfGames: number;
+  status: string;
 }
 interface Games {
   id: string;

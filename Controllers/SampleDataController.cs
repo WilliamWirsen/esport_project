@@ -189,8 +189,8 @@ namespace esport.Controllers
                     var live = new LiveGame
                     {
                         id = (int)item["event"]["id"],
-                        startDate = (string)item["event"]["begin_at"],
-                        isActive = (bool)item["event"]["is_active"],
+                        startDate = (string)item["match"]["begin_at"],
+                        isActive = (bool)item["match"]["live"]["supported"],
                         matchType = (string)item["match"]["match_type"],
                         streamUrl = (string)item["event"]["stream_url"],
                         draw = (bool)item["match"]["draw"],
@@ -202,7 +202,8 @@ namespace esport.Controllers
                         numberOfGames = (int)item["match"]["number_of_games"],
                         season = (string)item["match"]["tournament"]["name"],
                         name = (string)item["match"]["league"]["name"],
-                        league = league
+                        league = league,
+                        status = (string)item["match"]["status"]
                     };
 
                     liveGames.Add(live);
@@ -247,6 +248,7 @@ namespace esport.Controllers
             public int opponentTwoResult { get; set; }
             public string season { get; set; }
             public int numberOfGames { get; set; }
+            public string status { get; set; }
         }
 
         public class WeatherForecast
