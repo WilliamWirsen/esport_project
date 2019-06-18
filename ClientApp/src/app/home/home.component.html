@@ -1,10 +1,10 @@
 <main class="main-body">
 
-  <h1 style="text-align: center;">Live right now!</h1>
-  <div class="row">
-    <div class="live-cards-container">
+  <h1 style="text-align: center; margin-top:6rem;">Live right now!</h1>
+  <div class="live-cards-container">
+    <div class="row">
       <ng-container *ngFor="let live of liveGames">
-        <article class="live-card col-sm-3" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+        <article class="live-card col-sm-4" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
           <a class="live-stream-link" href="{{live.streamUrl !== null ? live.streamUrl : '#'}}">
             <div class="match-wrapper">
               <span *ngIf="live.status !== 'finished'" class="live-icon"></span>
@@ -14,7 +14,6 @@
                   <span>{{live.opponentOne.name}}</span>
                 </div>
                 <div class="live-match-details">
-                  <span>{{live.name}}</span>
                   <span class="live-result">{{live.opponentOneResult}} - {{live.opponentTwoResult}}</span>
                   <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
                   <span class="live-begin-date">{{live.startDate | date: 'shortTime'}}</span>
@@ -28,6 +27,10 @@
               </div>
             </div>
           </a>
+          <div class="league-information-container">
+            <img class="live-league-logo" src="{{live.league.imgUrl}}" alt="{{live.league.name}}" />
+            <span>{{live.name}} | {{live.season}} </span>
+          </div>
         </article>
 
       </ng-container>
