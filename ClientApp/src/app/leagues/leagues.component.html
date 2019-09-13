@@ -1,0 +1,23 @@
+<main class="main-body">
+  <h1>Leagues</h1>
+
+  <div class="container">
+    <div class="row">
+      <ng-container ng-if="!leagues">
+        <ng-container *ngFor="let league of leagues">
+          <article class="col-md-4" data-id="{{league.id}}">
+            <div class="card">
+              <img class="card-img-top" src="{{league.imgUrl}}" alt="{{league.name}} logga" />
+              <div class="card-body">
+                <h5>{{league.name}}</h5>
+                <hr />
+                <em>{{league.videogame}}</em>
+                <a class="btn btn-primary" href="{{league.url}}">Läs mer</a>
+              </div>
+            </div>
+          </article>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</main>
