@@ -43,14 +43,14 @@ namespace esport.Models
                     .Select(matches => new Match
                     {
                         ID = (int)matches["id"],
-                        draw = (bool)matches["draw"],
-                        forfeit = (bool)matches["forfeit"],
-                        matchType = (string)matches["match_type"],
-                        name = (string)matches["name"],
-                        numberOfGames = (int)matches["number_of_games"],
-                        opponent1 = opponents[0],
-                        opponent2 = opponents[1],
-                        winnerId = 0
+                        Draw = (bool)matches["draw"],
+                        Forfeit = (bool)matches["forfeit"],
+                        MatchType = (string)matches["match_type"],
+                        Name = (string)matches["name"],
+                        NumberOfGames = (int)matches["number_of_games"],
+                        Opponent1 = opponents[0],
+                        Opponent2 = opponents[1],
+                        WinnerId = 0
                     })
                     .ToList();
 

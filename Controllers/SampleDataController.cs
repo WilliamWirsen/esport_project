@@ -1,43 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+using esport.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RestSharp;
-using esport.Models;
 using Newtonsoft.Json.Linq;
+using RestSharp;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace esport.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        static string token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
-
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
-        }
+        private static string _token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
 
         [HttpGet("[action]")]
         public IActionResult GetMatches()
         {
-            var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token=" + token);
+            var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token=" + _token);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             System.Diagnostics.Debug.WriteLine(response);
@@ -55,7 +34,7 @@ namespace esport.Controllers
                     }
                     else if (item["opponents"].Count<object>() <= 1)
                         continue;
-                       
+
                     //System.Diagnostics.Debug.WriteLine(item["opponents"].Count<object>());
                     var league = new League
                     {
@@ -66,7 +45,7 @@ namespace esport.Controllers
                         url = (string)item["league"]["url"],
                         videogame = (string)item["videogame"]["name"]
                     };
-                    
+
                     var opponentOne = new Team
                     {
                         ID = (int)item["opponents"][0]["opponent"]["id"],
@@ -93,16 +72,16 @@ namespace esport.Controllers
                     var upcomingGame = new UpcomingGame
                     {
                         ID = (int)item["id"],
-                        startDate = (string)item["begin_at"],
-                        draw = (bool)item["draw"],
-                        matchType = (string)item["match_type"],
-                        name = (string)item["name"],
-                        numberOfGames = (int)item["number_of_games"],
-                        tournament = (string)item["tournament"]["name"],
-                        league = league,
-                        opponentOne = opponentOne,
-                        opponentTwo = opponentTwo,
-                        series = series
+                        StartDate = (string)item["begin_at"],
+                        Draw = (bool)item["draw"],
+                        MatchType = (string)item["match_type"],
+                        Name = (string)item["name"],
+                        NumberOfGames = (int)item["number_of_games"],
+                        Tournament = (string)item["tournament"]["name"],
+                        League = league,
+                        OpponentOne = opponentOne,
+                        OpponentTwo = opponentTwo,
+                        Series = series
                     };
                     upcomingGames.Add(upcomingGame);
                     System.Diagnostics.Debug.WriteLine(upcomingGame);
@@ -119,7 +98,7 @@ namespace esport.Controllers
         [HttpGet("[action]")]
         public IActionResult GetLeagues()
         {
-            var client = new RestClient($"https://api.pandascore.co//leagues?per_page=100&token=" + token);
+            var client = new RestClient($"https://api.pandascore.co//leagues?per_page=100&token=" + _token);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
 
@@ -151,7 +130,7 @@ namespace esport.Controllers
         [HttpGet("[action]")]
         public IActionResult GetLiveMatches()
         {
-            var client = new RestClient($"https://api.pandascore.co//lives?per_page=3&token=" + token);
+            var client = new RestClient($"https://api.pandascore.co//lives?per_page=3&token=" + _token);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
 
@@ -161,49 +140,50 @@ namespace esport.Controllers
                 List<LiveGame> liveGames = new List<LiveGame>();
                 foreach (var item in content)
                 {
+                    var match = item["match"];
                     var league = new League
                     {
-                        ID = (int)item["match"]["league"]["id"],
-                        imgUrl = (string)item["match"]["league"]["image_url"],
-                        name = (string)item["match"]["league"]["name"],
-                        slug = (string)item["match"]["league"]["slug"],
+                        ID = (int)match["league"]["id"],
+                        imgUrl = (string)match["league"]["image_url"],
+                        name = (string)match["league"]["name"],
+                        slug = (string)match["league"]["slug"],
                         url = (string)"",
                         videogame = (string)""
                     };
 
                     var opponentOne = new Team
                     {
-                        ID = (int)item["match"]["opponents"][0]["opponent"]["id"],
-                        acronym = (string)item["match"]["opponents"][0]["opponent"]["acronym"],
-                        name = (string)item["match"]["opponents"][0]["opponent"]["name"],
-                        imgUrl = (string)item["match"]["opponents"][0]["opponent"]["image_url"]
+                        ID = (int)match["opponents"][0]["opponent"]["id"],
+                        acronym = (string)match["opponents"][0]["opponent"]["acronym"],
+                        name = (string)match["opponents"][0]["opponent"]["name"],
+                        imgUrl = (string)match["opponents"][0]["opponent"]["image_url"]
                     };
                     var opponentTwo = new Team
                     {
-                        ID = (int)item["match"]["opponents"][1]["opponent"]["id"],
-                        acronym = (string)item["match"]["opponents"][1]["opponent"]["acronym"],
-                        name = (string)item["match"]["opponents"][1]["opponent"]["name"],
-                        imgUrl = (string)item["match"]["opponents"][1]["opponent"]["image_url"]
+                        ID = (int)match["opponents"][1]["opponent"]["id"],
+                        acronym = (string)match["opponents"][1]["opponent"]["acronym"],
+                        name = (string)match["opponents"][1]["opponent"]["name"],
+                        imgUrl = (string)match["opponents"][1]["opponent"]["image_url"]
                     };
 
                     var live = new LiveGame
                     {
                         id = (int)item["event"]["id"],
-                        startDate = (string)item["match"]["begin_at"],
-                        isActive = (bool)item["match"]["live"]["supported"],
-                        matchType = (string)item["match"]["match_type"],
-                        streamUrl = (string)item["event"]["stream_url"],
-                        draw = (bool)item["match"]["draw"],
-                        forfeit = (bool)item["match"]["forfeit"],
+                        startDate = (string)match["begin_at"],
+                        isActive = (bool)match["live"]["supported"],
+                        matchType = (string)match["match_type"],
+                        streamUrl = (string)match["stream_url"],
+                        draw = (bool)match["draw"],
+                        forfeit = (bool)match["forfeit"],
                         opponentOne = opponentOne,
                         opponentTwo = opponentTwo,
-                        opponentOneResult = (int)item["match"]["results"][0]["score"],
-                        opponentTwoResult = (int)item["match"]["results"][1]["score"],
-                        numberOfGames = (int)item["match"]["number_of_games"],
-                        season = (string)item["match"]["tournament"]["name"],
-                        name = (string)item["match"]["league"]["name"],
+                        opponentOneResult = (int)match["results"][0]["score"],
+                        opponentTwoResult = (int)match["results"][1]["score"],
+                        numberOfGames = (int)match["number_of_games"],
+                        season = (string)match["tournament"]["name"],
+                        name = (string)match["league"]["name"],
                         league = league,
-                        status = (string)item["match"]["status"]
+                        status = (string)match["status"]
                     };
 
                     liveGames.Add(live);
@@ -216,54 +196,5 @@ namespace esport.Controllers
 
         }
 
-        public class UpcomingGame
-        {
-            public int ID { get; set; }
-            public string startDate { get; set; }
-            public bool draw { get; set; }
-            public string matchType { get; set; }
-            public string name { get; set; }
-            public int numberOfGames { get; set; }
-            public string tournament { get; set; }
-            public League league { get; set; }
-            public Team opponentOne { get; set; }
-            public Team opponentTwo { get; set; }
-            public Series series { get; set; }
-        }
-
-        public class LiveGame
-        {
-            public int id { get; set; }
-            public string startDate { get; set; }
-            public string name { get; set; }
-            public bool isActive { get; set; }
-            public string matchType { get; set; }
-            public string streamUrl { get; set; }
-            public bool draw { get; set; }
-            public bool forfeit { get; set; }
-            public Team opponentOne { get; set; }
-            public Team opponentTwo { get; set; }
-            public League league { get; set; }
-            public int opponentOneResult { get; set; }
-            public int opponentTwoResult { get; set; }
-            public string season { get; set; }
-            public int numberOfGames { get; set; }
-            public string status { get; set; }
-        }
-
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
-        }
     }
 }
