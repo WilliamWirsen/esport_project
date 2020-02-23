@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,15 +15,31 @@ export class HomeComponent {
   public liveGames: LiveGames[];
   today: number = Date.now();
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
-      this.matches = result;
-      console.log(this.matches);
-    }, error => console.error(error));
+  overwatch = null;
+  rocketLeague = null;
+  cod = null;
+  dota2 = null;
+  csgo = null;
 
-    http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagues').subscribe(result => {
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
+    //  this.matches = result;
+    //  console.log(this.matches);
+    //}, error => console.error(error));
+
+    http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagueMatches').subscribe(result => {
       this.leagues = result;
       console.log(this.leagues);
+      this.overwatch = this.leagues.filter(item => item.slug == "overwatch");
+      this.rocketLeague = this.leagues.filter(item => item.slug == "rl");
+      this.cod = this.leagues.filter(item => item.slug == "cod-mw");
+      this.dota2 = this.leagues.filter(item => item.slug == "dota-2");
+      this.csgo = this.leagues.filter(item => item.slug == "cs-go");
+      console.log("DOTA");
+      console.log(this.dota2);
+      console.log(this.dota2[0].matches[0]);
+      
     }, error => console.error(error));
 
     http.get<LiveGames[]>(baseUrl + 'api/SampleData/GetLiveMatches').subscribe(result => {
@@ -58,10 +73,11 @@ export class HomeComponent {
         img: "../../assets/csgo-icon-6.png"
       }
     ]
+    
   }
   ngOnInit() {
     $(document).ready(function () {
-
+      
     });
   }
 }
@@ -70,7 +86,7 @@ export class HomeComponent {
 interface LiveGames {
   id: number;
   startDate: string;
-  name: string;  
+  name: string;
   is_active: boolean;
   match_type: string;
   stream_url: string;
@@ -97,6 +113,7 @@ interface Leagues {
   name: string;
   slug: string;
   videogame: string;
+  matches: object;
 }
 
 interface Matches {

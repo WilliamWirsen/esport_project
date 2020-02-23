@@ -8,12 +8,17 @@ namespace esport.Models
 {
     public class League
     {
-        public int ID { get; set; }
-        public string imgUrl { get; set; }
-        public string name { get; set; }
-        public string slug { get; set; }
-        public string url { get; set; }
-        public string videogame { get; set; }
+        public League()
+        {
+            Matches = new List<UpcomingMatches>();
+        }
+        public int Id { get; set; }
+        public string ImgUrl { get; set; }
+        public string Name { get; set; }
+        public string Slug { get; set; }
+        public string Url { get; set; }
+        public Game Videogame { get; set; }
+        public List<UpcomingMatches> Matches { get; set; }
 
     }
 }

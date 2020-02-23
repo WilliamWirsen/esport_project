@@ -11,6 +11,6 @@
         public Team Opponent1 { get; set; }
         public Team Opponent2 { get; set; }
         public int WinnerId { get; set; }
-        public League Weague { get; set; }
+        public League League { get; set; }
     }
 }

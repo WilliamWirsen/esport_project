@@ -13,6 +13,7 @@
     <OldToolsVersion>Current</OldToolsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Enums.NET" Version="3.0.3" />
     <PackageReference Include="jQuery" Version="3.4.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

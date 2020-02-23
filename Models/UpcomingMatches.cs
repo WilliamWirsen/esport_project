@@ -1,6 +1,6 @@
 ﻿namespace esport.Models
 {
-    public class UpcomingGame
+    public class UpcomingMatches
     {
         public int ID { get; set; }
         public string StartDate { get; set; }
