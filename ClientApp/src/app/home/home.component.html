@@ -38,7 +38,7 @@
   </ng-container>
   <div class="container">
     <div class="row">
-      <div class="game-header">
+      <div class="game-header" *ngIf="overwatch.length != 0">
         <img class="game-logo" src="../../assets/overwatch.png" alt="overwatch logo" /><span>Overwatch</span>
       </div>
       <div class="schedule-body">
@@ -61,11 +61,10 @@
                 </div>
               </ng-container>
             </div>
-            {{upcomingGames}}
           </ng-container>
         </div>
       </div>
-      <div class="game-header">
+      <div class="game-header" *ngIf="dota2.length != 0">
         <img class="game-logo" src="../../assets/dota-2.png" alt="Dota 2 logo" /><span>Dota 2</span>
       </div>
       <div class="schedule-body">
@@ -76,7 +75,75 @@
               <span>{{upcomingGame.name}}</span>
             </div>
             <div class="matches-schedule">
-              <ng-container *ngFor="let match of dota2[0].matches; index as i;" >
+              <ng-container *ngFor="let match of dota2[0].matches">
+                <div class="row">
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                  <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                  <div ng-if="dota2[0].matches.length > 1"><hr /></div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="game-header" *ngIf="csgo.length != 0">
+        <img class="game-logo" src="../../assets/cs-go.png" alt="Counter-strike: Global Offensive logo" /><span>Counter-strike: Global Offensive</span>
+      </div>
+      <div class="schedule-body">
+        <div class="league-wrapper">
+          <ng-container *ngFor="let upcomingGame of csgo">
+            <div class="league-header">
+              <img class="league-logo" src="{{upcomingGame.imgUrl}}" alt="{{upcomingGame.name}}" />
+              <span>{{upcomingGame.name}}</span>
+            </div>
+            <div class="matches-schedule">
+              <ng-container *ngFor="let match of csgo[0].matches">
+                <div class="row">
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                  <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                  <div *ngIf="csgo[0].matches.length > 1"><hr /></div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+        <div class="game-header" *ngIf="rocketLeague.length != 0">
+          <img class="game-logo" src="../../assets/rl.png" alt="Rocket League logo" /><span>Rocket League</span>
+        </div>
+        <div class="schedule-body">
+          <div class="league-wrapper">
+            <ng-container *ngFor="let upcomingGame of rocketLeague">
+              <div class="league-header">
+                <img class="league-logo" src="{{upcomingGame.imgUrl}}" alt="{{upcomingGame.name}}" />
+                <span>{{upcomingGame.name}}</span>
+              </div>
+              <div class="matches-schedule">
+                <ng-container *ngFor="let match of rocketLeague[0].matches">
+                  <div class="row">
+                    <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                    <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                    <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      <div class="game-header" *ngIf="cod.length != 0">
+        <img class="game-logo" src="../../assets/cod-mw.png" alt="Call of Duty: Modern Warfare logo" /><span>Call of Duty: Modern Warfare</span>
+      </div>
+      <div class="schedule-body">
+        <div class="league-wrapper">
+          <ng-container *ngFor="let upcomingGame of cod">
+            <div class="league-header">
+              <img class="league-logo" src="{{upcomingGame.imgUrl}}" alt="{{upcomingGame.name}}" />
+              <span>{{upcomingGame.name}}</span>
+            </div>
+            <div class="matches-schedule">
+              <ng-container *ngFor="let match of cod[0].matches">
                 <div class="row">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
@@ -86,33 +153,6 @@
             </div>
           </ng-container>
         </div>
-      </div>
-      <div class="game-header">
-        <img class="game-logo" src="../../assets/cs-go.png" alt="Counter-strike: Global Offensive logo" /><span>Counter-strike: Global Offensive</span>
-      </div>
-      <div class="schedule-body">
-        <ng-container *ngFor="let upcomingGames of csgo">
-
-          {{upcomingGames}}
-        </ng-container>
-      </div>
-      <div class="game-header">
-        <img class="game-logo" src="../../assets/rl.png" alt="Rocket League logo" /><span>Rocket League</span>
-      </div>
-      <div class="schedule-body">
-        <ng-container *ngFor="let upcomingGames of rocketLeague">
-
-          {{upcomingGames}}
-        </ng-container>
-      </div>
-      <div class="game-header">
-        <img class="game-logo" src="../../assets/cod-mw.png" alt="Call of Duty: Modern Warfare logo" /><span>Call of Duty: Modern Warfare</span>
-      </div>
-      <div class="schedule-body">
-        <ng-container *ngFor="let upcomingGames of cod">
-
-          {{upcomingGames}}
-        </ng-container>
       </div>
     </div>
   </div>

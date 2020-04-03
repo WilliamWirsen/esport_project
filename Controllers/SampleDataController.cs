@@ -98,7 +98,7 @@ namespace esport.Controllers
                     leagueList.Add(new League
                     {
                         Id = league.Id,
-                        ImgUrl = league.ImgUrl,
+                        ImgUrl = league.ImgUrl ?? "https://via.placeholder.com/35X21",
                         Name = league.Name,
                         Slug = league.Slug,
                         Url = league.Url,

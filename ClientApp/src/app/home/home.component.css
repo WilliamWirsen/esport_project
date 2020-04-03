@@ -210,12 +210,18 @@ h1 {
   flex-direction: column;
 }
 
-.match-schedule {
+.matches-schedule {
   display: flex;
   justify-content: space-around;
   text-align: center;
   border-bottom: 1px solid #f8f8f8;
   padding: 2rem;
+  flex-direction: column;
+}
+
+.matches-schedule .row {
+    display: flex;
+    align-items: center;
 }
 
 .game-schedule-container {
@@ -251,4 +257,16 @@ h1 {
 .schedule-body {
   align-self: flex-end;
   width: 90%;
+}
+
+hr {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-color: #EEEEEE -moz-use-text-color rgba(26, 26, 26, 0.97);
+  border-style: solid none;
+  border-width: 1px 0;
+  margin: 18px 0;
 }

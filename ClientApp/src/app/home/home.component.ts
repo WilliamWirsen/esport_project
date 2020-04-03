@@ -36,9 +36,9 @@ export class HomeComponent {
       this.cod = this.leagues.filter(item => item.slug == "cod-mw");
       this.dota2 = this.leagues.filter(item => item.slug == "dota-2");
       this.csgo = this.leagues.filter(item => item.slug == "cs-go");
-      console.log("DOTA");
-      console.log(this.dota2);
-      console.log(this.dota2[0].matches[0]);
+      console.log("Rocket League");
+      console.log(this.rocketLeague);
+      //console.log(this.rocketLeague[0].matches[0]);
       
     }, error => console.error(error));
 
