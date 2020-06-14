@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'league',
+  selector: 'leagues',
   templateUrl: './leagues.component.html',
   styleUrls: ['./leagues.component.css']
 })

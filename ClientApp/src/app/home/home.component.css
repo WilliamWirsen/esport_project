@@ -74,6 +74,7 @@ h1 {
   font-style: italic;
   font-size: 1.2rem;
 }
+
 .number-of-games {
   font-weight: bold;
 }
@@ -142,6 +143,12 @@ h1 {
   }
 }
 
+.live-games-header {
+  margin: 5em 0;
+  padding: 5em;
+  text-align: center;
+}
+
 .live-result {
   font-size: 2.5rem;
 }
@@ -172,7 +179,7 @@ h1 {
 }
 
 .league-information-container span {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #f2f2f2;
   align-self: center;
   margin-left: 1rem;
@@ -194,16 +201,27 @@ h1 {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: flex-start;
-  background-color: #f8f8f8;
+  justify-content: space-between;
+  background-color: #636363;
   padding: 2rem;
+  border-radius: 0 0 100px 0;
 }
 
-  .game-header span {
-    margin-left: 3rem;
-    align-self: center;
-    font-size: x-large;
-  }
+.game-header-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.game-header-right {
+  margin-right: 3em;
+}
+
+.game-header span {
+  margin-left: 3rem;
+  align-self: center;
+  font-size: x-large;
+  color: #f7f7f7;
+}
 
 .schedule {
   display: flex;
@@ -219,10 +237,10 @@ h1 {
   flex-direction: column;
 }
 
-.matches-schedule .row {
+  .matches-schedule .row {
     display: flex;
     align-items: center;
-}
+  }
 
 .game-schedule-container {
   width: 100%;
@@ -247,11 +265,14 @@ h1 {
   margin-bottom: 1rem;
 }
 
-  .league-header span {
+  .league-header a {
     margin-left: 1rem;
     align-self: center;
     font-weight: bold;
     color: darkslategray;
+  }
+  .league-header a:hover {
+      text-decoration: none;
   }
 
 .schedule-body {

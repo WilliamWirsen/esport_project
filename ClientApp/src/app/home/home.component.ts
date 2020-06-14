@@ -9,17 +9,17 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class HomeComponent {
-  public matches: Matches[];
-  public leagues: Leagues[];
-  public games: Games[];
-  public liveGames: LiveGames[];
+  public matches: Matches[] = [];
+  public leagues: Leagues[] = [];
+  public games: Games[] = [];
+  public liveGames: LiveGames[] = [];
   today: number = Date.now();
 
-  overwatch = null;
-  rocketLeague = null;
-  cod = null;
-  dota2 = null;
-  csgo = null;
+  overwatch = [];
+  rocketLeague = [];
+  cod = [];
+  dota2 = [];
+  csgo = [];
 
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -30,14 +30,15 @@ export class HomeComponent {
 
     http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagueMatches').subscribe(result => {
       this.leagues = result;
+      console.log("--- Leagues ---");
       console.log(this.leagues);
+      console.log("--- End Leagues ---");
       this.overwatch = this.leagues.filter(item => item.slug == "overwatch");
       this.rocketLeague = this.leagues.filter(item => item.slug == "rl");
       this.cod = this.leagues.filter(item => item.slug == "cod-mw");
       this.dota2 = this.leagues.filter(item => item.slug == "dota-2");
       this.csgo = this.leagues.filter(item => item.slug == "cs-go");
       console.log("Rocket League");
-      console.log(this.rocketLeague);
       //console.log(this.rocketLeague[0].matches[0]);
       
     }, error => console.error(error));
@@ -45,6 +46,8 @@ export class HomeComponent {
     http.get<LiveGames[]>(baseUrl + 'api/SampleData/GetLiveMatches').subscribe(result => {
       this.liveGames = result;
       console.log(this.liveGames);
+      console.log(this.liveGames.length);
+
     }, error => console.error(error));
 
     this.games = [
@@ -127,7 +130,6 @@ interface Matches {
   league: object;
   opponentOne: object;
   opponentTwo: object;
-
 }
 
 
