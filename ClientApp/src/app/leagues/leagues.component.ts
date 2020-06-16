@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./leagues.component.css']
 })
 
-export class LeagueComponent {
+export class LeaguesComponent {
   public leagues: Leagues[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -6,3 +6,8 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './league.component.html',
   styleUrls: ['./league.component.css']
 })
+
+export class LeagueComponent {
+  public League: League[] = [];
+
+}
