@@ -11,6 +11,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LeaguesComponent } from './leagues/leagues.component'; 
+import { LeagueComponent } from './league/league.component'; 
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LeaguesComponent } from './leagues/leagues.component';
     CounterComponent,
     FetchDataComponent,
     NavbarComponent,
-    LeaguesComponent
+    LeaguesComponent,
+    LeagueComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

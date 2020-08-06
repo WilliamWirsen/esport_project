@@ -1,7 +1,6 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, NgModule } from '@angular/core';
 import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,6 +19,8 @@ export class HomeComponent {
   cod = [];
   dota2 = [];
   csgo = [];
+  siege = [];
+  lol = [];
 
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -38,6 +39,8 @@ export class HomeComponent {
       this.cod = this.leagues.filter(item => item.slug == "cod-mw");
       this.dota2 = this.leagues.filter(item => item.slug == "dota-2");
       this.csgo = this.leagues.filter(item => item.slug == "cs-go");
+      this.siege = this.leagues.filter(item => item.slug == "r6-siege");
+      this.lol = this.leagues.filter(item => item.slug == "league-of-legends");
       console.log("Rocket League");
       //console.log(this.rocketLeague[0].matches[0]);
       
@@ -74,6 +77,18 @@ export class HomeComponent {
         name: "Counter Strike: Global Offensive",
         slug: "CS:GO",
         img: "../../assets/csgo-icon-6.png"
+      },
+      {
+        id: "Rocket_League",
+        name: "Rocket League",
+        slug: "rl",
+        img: "../../assets/rl.png"
+      },
+      {
+        id: "r6-siege",
+        name: "Rainbow Six Siege",
+        slug: "r6-siege",
+        img: "../../assets/r6-siege.png"
       }
     ]
     

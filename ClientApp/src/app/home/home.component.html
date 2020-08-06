@@ -44,7 +44,7 @@
   <hr />
   <h1 style="text-align:center;">Upcoming games</h1>
   <div class="container">
-    <div class="row">
+    <div class="row mb-5em">
       <div class="game-header" *ngIf="overwatch.length > 0">
         <div class="game-header-left">
         <img class="game-logo" src="../../assets/overwatch.png" alt="overwatch logo" />
@@ -100,6 +100,35 @@
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
                   <div ng-if="dota2[0].matches.length > 1"><hr /></div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="game-header" *ngIf="lol.length > 0">
+        <div class="game-header-left">
+          <img class="game-logo" src="../../assets/league-of-legends.png" alt="League of Legends logo" />
+          <span>League of Legends</span>
+        </div>
+        <div class="game-header-right">
+          <span class="badge badge-light">{{lol.length}}</span>
+        </div>
+      </div>
+      <div class="schedule-body">
+        <div class="league-wrapper">
+          <ng-container *ngFor="let upcomingGame of lol">
+            <div class="league-header">
+              <img class="league-logo" src="{{upcomingGame.imgUrl}}" alt="{{upcomingGame.name}}" />
+              <a routerLink="/league/{{upcomingGame.id}}" routerLinkActive="active">{{upcomingGame.name}}</a>
+            </div>
+            <div class="matches-schedule">
+              <ng-container *ngFor="let match of lol[0].matches">
+                <div class="row">
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                  <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                  <div ng-if="lol[0].matches.length > 1"><hr /></div>
                 </div>
               </ng-container>
             </div>
@@ -181,6 +210,34 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of cod[0].matches">
+                <div class="row">
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
+                  <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
+                  <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="game-header" *ngIf="siege.length > 0">
+        <div class="game-header-right">
+          <img class="game-logo" src="../../assets/r6-siege.png" alt="Rainbow Six Siege" />
+          <span>Rainbow Six Siege</span>
+        </div>
+        <div class="game-header-right">
+          <span class="badge badge-light">{{siege.length}}</span>
+        </div>
+      </div>
+      <div class="schedule-body">
+        <div class="league-wrapper">
+          <ng-container *ngFor="let upcomingGame of siege">
+            <div class="league-header">
+              <img class="league-logo" src="{{upcomingGame.imgUrl}}" alt="{{upcomingGame.name}}" />
+              <a routerLink="/league/{{upcomingGame.id}}" routerLinkActive="active">{{upcomingGame.name}}</a>
+            </div>
+            <div class="matches-schedule">
+              <ng-container *ngFor="let match of siege[0].matches">
                 <div class="row">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>

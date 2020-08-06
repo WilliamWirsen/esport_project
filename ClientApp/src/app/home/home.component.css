@@ -1,3 +1,5 @@
+/*Color Scheme: #090979, #161a42 */
+
 .main-body {
   margin-top: 5rem;
 }
@@ -169,7 +171,11 @@ h1 {
   display: flex;
   justify-content: flex-start;
   flex-wrap: nowrap;
-  background-color: #183B34;
+  background: rgb(2,0,36);
+  background: -moz-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
+  background: -webkit-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#00d4ff",GradientType=1);
   height: 35px;
 }
 
@@ -202,8 +208,9 @@ h1 {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  background-color: #636363;
-  padding: 2rem;
+  background: rgb(2,0,36);
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
+  padding: 1.5rem;
   border-radius: 0 0 100px 0;
 }
 
@@ -215,6 +222,9 @@ h1 {
 .game-header-right {
   margin-right: 3em;
 }
+  .game-header-right span {
+    background: #161a42;
+  }
 
 .game-header span {
   margin-left: 3rem;
@@ -264,6 +274,9 @@ h1 {
   display: flex;
   margin-bottom: 1rem;
 }
+  .league-header img {
+    margin: 0 10px;
+  }
 
   .league-header a {
     margin-left: 1rem;
@@ -290,4 +303,8 @@ hr {
   border-style: solid none;
   border-width: 1px 0;
   margin: 18px 0;
+}
+
+.mb-5em {
+    margin-bottom: 5em;
 }
