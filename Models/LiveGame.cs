@@ -14,6 +14,7 @@ namespace esport.Models
         public bool isActive { get; set; }
         public string matchType { get; set; }
         public string streamUrl { get; set; }
+        public string linkUrl { get; set; }
         public bool draw { get; set; }
         public bool forfeit { get; set; }
         public Team opponentOne { get; set; }

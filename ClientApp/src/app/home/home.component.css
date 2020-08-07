@@ -71,7 +71,7 @@ h1 {
 }
 
 .live-status {
-  color: cadetblue;
+  color: #090874;
   text-transform: uppercase;
   font-style: italic;
   font-size: 1.2rem;
@@ -181,7 +181,7 @@ h1 {
 
 .live-league-logo {
   align-self: center;
-  background: #41ac96;
+  background: #f8f8f8;
 }
 
 .league-information-container span {
@@ -196,7 +196,7 @@ h1 {
 }
 
 .game-logo {
-  max-width: 38px;
+  max-height: 38px;
 }
 
 .league-logo {
@@ -222,6 +222,7 @@ h1 {
 .game-header-right {
   margin-right: 3em;
 }
+
   .game-header-right span {
     background: #161a42;
   }
@@ -273,9 +274,16 @@ h1 {
   font-size: small;
   display: flex;
   margin-bottom: 1rem;
+  display: flex;
 }
+
   .league-header img {
     margin: 0 10px;
+  }
+
+  .league-header span {
+    align-self: center;
+    font-weight: 600;
   }
 
   .league-header a {
@@ -284,9 +292,10 @@ h1 {
     font-weight: bold;
     color: darkslategray;
   }
-  .league-header a:hover {
+
+    .league-header a:hover {
       text-decoration: none;
-  }
+    }
 
 .schedule-body {
   align-self: flex-end;
@@ -306,5 +315,8 @@ hr {
 }
 
 .mb-5em {
-    margin-bottom: 5em;
+  margin-bottom: 5em;
+}
+.mb-10px {
+    margin-bottom: 10px;
 }

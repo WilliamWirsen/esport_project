@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -61,7 +62,8 @@ namespace esport.Controllers
                         startDate = (string)match["begin_at"],
                         isActive = (bool)match["live"]["supported"],
                         matchType = (string)match["match_type"],
-                        streamUrl = (string)match["stream_url"],
+                        streamUrl = (string)match["live_embed_url"],
+                        linkUrl = (string)match["live_url"],
                         draw = (bool)match["draw"],
                         forfeit = (bool)match["forfeit"],
                         opponentOne = opponentOne,
@@ -106,7 +108,11 @@ namespace esport.Controllers
                         Matches = matches.Where(x => x.League.Id == league.Id).ToList()
                     });
                 }
-                return Ok(leagueList.Where(x => x.Matches.Any()));
+                //foreach (var league in leagueList.GroupBy(x => x.Videogame.Id).Select(group => new { Metric = group.Key, Count = group.Count() }).OrderBy(x => x.Metric)) {
+                //    Console.WriteLine("{0} {1}", league.Metric, league.Count);
+                //}
+                leagueList = leagueList.Where(x => x.Matches.Any()).ToList();
+                return Ok(leagueList);
             }
             return BadRequest();
         }

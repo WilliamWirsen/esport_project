@@ -1,13 +1,16 @@
-import { Component, Inject, NgModule } from '@angular/core';
+import { Component, Inject, NgModule, Pipe,PipeTransform  } from '@angular/core';
 import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent {
+@Pipe({ name: 'safe' })
+
+  export class HomeComponent implements PipeTransform {
   public matches: Matches[] = [];
   public leagues: Leagues[] = [];
   public games: Games[] = [];
@@ -22,8 +25,17 @@ export class HomeComponent {
   siege = [];
   lol = [];
 
+  overwatchCounter = 0;
+  rocketLeagueCounter = 0;
+  codCounter = 0;
+  dotaCounter = 0;
+  csgoCounter = 0;
+  siegeCounter = 0;
+  lolCounter = 0;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+
+
+    constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer) {
     //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
     //  this.matches = result;
     //  console.log(this.matches);
@@ -41,14 +53,28 @@ export class HomeComponent {
       this.csgo = this.leagues.filter(item => item.slug == "cs-go");
       this.siege = this.leagues.filter(item => item.slug == "r6-siege");
       this.lol = this.leagues.filter(item => item.slug == "league-of-legends");
-      console.log("Rocket League");
-      //console.log(this.rocketLeague[0].matches[0]);
-      
+
+      this.overwatchCounter = countMatches(this.overwatch, this.overwatchCounter);
+      this.rocketLeagueCounter = countMatches(this.rocketLeague, this.rocketLeagueCounter);
+      this.csgoCounter = countMatches(this.csgo, this.csgoCounter);
+      this.codCounter = countMatches(this.cod, this.codCounter);
+      this.dotaCounter = countMatches(this.dota2, this.dotaCounter);
+      this.siegeCounter = countMatches(this.siege, this.siegeCounter);
+      this.lolCounter = countMatches(this.lol, this.lolCounter);      
     }, error => console.error(error));
+
+    var countMatches = function (array, counter) {
+      for (var i in array) {
+        counter += Object.keys(array[i].matches).length;
+      }
+      return counter;
+    }
 
     http.get<LiveGames[]>(baseUrl + 'api/SampleData/GetLiveMatches').subscribe(result => {
       this.liveGames = result;
+      console.log("--- Live games ---")
       console.log(this.liveGames);
+      console.log("--- end live games ---")
       console.log(this.liveGames.length);
 
     }, error => console.error(error));
@@ -93,7 +119,12 @@ export class HomeComponent {
     ]
     
   }
+    transform(url) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url + "&parent=localhost&muted=true");
+    }
+
   ngOnInit() {
+
     $(document).ready(function () {
       
     });
