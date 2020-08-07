@@ -29,8 +29,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="ClientApp\src\app\league\league.component.ts" />
+    <None Remove="ClientApp\src\app\match\match.component.ts" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\match\match.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\league\league.component.ts" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,0 +1,31 @@
+<main class="main-body">
+  <div *ngIf="teams[0] !== undefined">
+    <div class="container">
+      <div class="match-container mt-6em">
+        <div class="row">
+          <ng-container *ngFor="let team of teams">
+            <div class="match-opponent-container col-md-6 col-xs-12">
+              <div class="page-header">
+                <h1>{{team.name}} <small>{{team.currentVideogame}}</small></h1>
+              </div>
+              <div class="row">
+                <div *ngFor="let player of team.players" class="col-xs-6 col-md-4">
+                  <div class="card" [attr.data-player-id]="player.id">
+                    <div class="card-image-top">
+                      <img [src]="player.imgUrl" alt="{{player.name}}">
+                    </div>
+                    <div class="card-body">
+                      <small>{{player.birthYear !== null ? today - player.birthYear + ' years old' : ''}}</small>
+                      <h4 class="card-title">{{player.firstName !== null || player.lastName !== null ? player.firstName + " " + player.lastName + " | " : ''}} <small> "{{player.name}}"</small></h4>
+                      <p class="card-text">{{player.nationality !== null ? player.nationality + " | " + player.homeTown : player.homeTown}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>        
+      </div>
+    </div>
+  </div>
+</main>

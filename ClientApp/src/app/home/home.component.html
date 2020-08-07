@@ -12,13 +12,12 @@
           <article class="live-card col-sm-4" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
             <ng-container *ngIf="live.streamUrl !== null">
               <iframe [src]="transform(live.streamUrl)"
-                      height="300"
-                      width="500"
+                      width="350"
                       frameborder="0"
                       scrolling="no"
                       allowfullscreen="true">
               </iframe>
-            </ng-container>            
+            </ng-container>
             <a class="live-stream-link" href="{{live.streamUrl !== null ? live.linkUrl : '#'}}" target="_blank">
               <div class="match-wrapper">
                 <span *ngIf="live.status !== 'finished'" class="live-icon"></span>
@@ -53,12 +52,12 @@
     </div>
   </ng-container>
   <hr />
-  <h1 style="text-align:center;">Upcoming games</h1>
+  <h1 style="text-align:center;">Upcoming games this month</h1>
   <div class="container">
     <div class="row mb-5em">
       <div class="game-header" [ngClass]="{'mb-10px' : overwatch.length < 1}">
         <div class="game-header-left">
-        <img class="game-logo" src="../../assets/overwatch.png" alt="overwatch logo" />
+          <img class="game-logo" src="../../assets/overwatch.png" alt="overwatch logo" />
           <span>Overwatch</span>
         </div>
         <div class="game-header-right">
@@ -76,7 +75,7 @@
               <ng-container *ngFor="let match of overwatch[i].matches">
                 <div class="match-schedule">
                   <div class="game-schedule-container">
-                    <div class="row">
+                    <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                       <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                       <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                       <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -106,11 +105,11 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of dota2[i].matches">
-                <div class="row">
+                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
-                  <div ng-if="dota2[0].matches.length > 1"><hr /></div>
+                  <div ng-if="dota2[i].matches.length > 1"><hr /></div>
                 </div>
               </ng-container>
             </div>
@@ -135,11 +134,11 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of lol[i].matches">
-                <div class="row">
+                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
-                  <div ng-if="lol[0].matches.length > 1"><hr /></div>
+                  <div ng-if="lol[i].matches.length > 1"><hr /></div>
                 </div>
               </ng-container>
             </div>
@@ -164,7 +163,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of csgo[i].matches">
-                <div class="row">
+                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -177,8 +176,8 @@
       </div>
       <div class="game-header" [ngClass]="{'mb-10px' : rocketLeague.length < 1}">
         <div class="game-header-left">
-        <img class="game-logo" src="../../assets/rl.png" alt="Rocket League logo" />
-        <span>Rocket League</span>
+          <img class="game-logo" src="../../assets/rl.png" alt="Rocket League logo" />
+          <span>Rocket League</span>
         </div>
         <div class="game-header-right">
           <span class="badge badge-light">{{rocketLeagueCounter}}</span>
@@ -193,7 +192,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of rocketLeague[i].matches">
-                <div class="row">
+                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -221,7 +220,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of cod[i].matches">
-                <div class="row">
+                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -249,7 +248,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of siege[i].matches">
-                <div class="row">
+                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -263,78 +262,5 @@
   </div>
   <p *ngIf="!matches"><em>Loading...</em></p>
 
-  <!--<div class="container">
-    <div class="row">
-      <ng-container *ngFor="let game of games">
-        <div id="{{game.id}} " class="schedule col-sm-12" *ngIf="games">
-          <div class="game-header">
-            <img class="game-logo" src="{{game.img}}" alt="{{game.name}} logo" /><span>{{game.name}}</span>
-          </div>
-          <div class="schedule-body">
-            <ng-container *ngFor="let league of leagues">
-              <div class="league-wrapper">
-                <div class="league-header" *ngIf="league.videogame === game.slug && league.imgUrl !== null">
-                  <img class="league-logo" src="{{league.imgUrl}}" alt="{{league.name}}" />
-                  <span>{{league.name}}</span>
-                </div>
-                <div class="matches-schedule">
-                  <ng-container *ngFor="let match of matches">
-                    <ng-container *ngIf="match.league.name == league.name && league.videogame == game.slug">
-                      <div class="match-schedule">
-                        <div class="game-schedule-container">
-                          <div class="row">
-                            <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
-                            <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
-                            <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-container>
-                  </ng-container>
-                </div>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </ng-container>
-    </div>
-  </div>
 
-
-  <table class='table table-striped' *ngIf="matches">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>name</th>
-        <th>logo</th>
-        <th>league</th>
-        <th>videogame</th>
-        <th>startDate</th>
-        <th>draw</th>
-        <th>match type</th>
-        <th>number of games</th>
-        <th>tournament</th>
-        <th>Team 1</th>
-        <th>Team 2</th>
-        <th>prize pool</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let match of matches">
-        <td ng-if="match.league.id == 545784">{{ match.id }}</td>
-        <td>{{ match.name }}</td>
-        <td><img class="league-logo img-fluid" src="{{match.league.imgUrl}}" alt="{{match.league.name}}" /></td>
-        <td>{{ match.league.name }}</td>
-        <td>{{ match.league.videogame }}</td>
-        <td>{{ match.startDate }}</td>
-        <td>{{ match.draw }}</td>
-        <td>{{ match.matchType }}</td>
-        <td>{{ match.numberOfGames }}</td>
-        <td>{{ match.tournament }}</td>
-        <td>{{ match.opponentOne.name }}</td>
-        <td>{{ match.opponentTwo.name }}</td>
-        <td>{{ match.series.prizepool }}</td>
-      </tr>
-    </tbody>
-  </table>-->
 </main>

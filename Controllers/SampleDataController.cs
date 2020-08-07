@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace esport.Controllers
 {
@@ -95,7 +96,7 @@ namespace esport.Controllers
             if (leagues.Any() && matches.Any())
             {
                 List<League> leagueList = new List<League>();
-                foreach ( var league in leagues)
+                foreach (var league in leagues)
                 {
                     leagueList.Add(new League
                     {
@@ -154,7 +155,7 @@ namespace esport.Controllers
 
         public List<UpcomingMatches> GetMatches()
         {
-            var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token=" + _token);
+            var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token=" + _token + "&filter[detailed_stats]=true&per_page=100&range[begin_at]=" + DateTime.Now + "," + DateTime.Now.AddMonths(1));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             System.Diagnostics.Debug.WriteLine(response);
@@ -182,7 +183,7 @@ namespace esport.Controllers
                         Slug = (string)item["videogame"]["slug"],
                         Url = (string)item["league"]["url"],
                         Videogame = new Game
-                        { 
+                        {
                             Id = (int)item["videogame"]["id"],
                             Name = (string)item["videogame"]["name"],
                             Slug = (string)item["videogame"]["slug"],
@@ -235,9 +236,56 @@ namespace esport.Controllers
             }
             System.Diagnostics.Debug.WriteLine("Connection not possible");
             return null;
-
         }
+        [HttpGet("[action]")]
+        public List<Team> GetOpponents(int id)
+        {
+            var client = new RestClient($"https://api.pandascore.co/matches/{id}/opponents");            
+            var request = new RestRequest(Method.GET);
+            request.AddParameter("Authorization", string.Format("Bearer " + _token),
+            ParameterType.HttpHeader);
+            IRestResponse response = client.Execute(request);
+            System.Diagnostics.Debug.WriteLine(response);
+            if (response.IsSuccessful)
+            {
+                var content = JsonConvert.DeserializeObject<JToken>(response.Content);
+                List<Team> opponents = new List<Team>();
+                foreach (var item in content["opponents"])
+                {
+                    var team = new Team()
+                    {
+                        acronym = (string)item["acronym"],
+                        imgUrl = (string)item["image_url"],
+                        name = (string)item["name"],
+                        CurrentVideogame = (string)item["current_videogame"]["name"],
+                        Players = new List<Player>()
 
-
+                    };
+                    List<Player> players = new List<Player>();
+                    foreach (var player in item["players"])
+                    {
+                        players.Add(new Player()
+                        {
+                            BirthYear = (string)player["birth_year"],
+                            Birthday = (DateTime?)player["birthday"],
+                            Name = (string)player["name"],
+                            HomeTown = (string)player["hometown"],
+                            Id = (int)player["id"],
+                            ImgUrl = (string)player["image_url"] ?? "/assets/profile-picture.png",
+                            FirstName = (string)player["first_name"],
+                            LastName = (string)player["last_name"],
+                            Nationality = (string)player["nationality"],
+                            Role = (string)player["role"],
+                            Slug = (string)player["slug"]
+                        });
+                    }
+                    team.Players.AddRange(players);
+                    opponents.Add(team);
+                }
+                return opponents;
+            }
+            System.Diagnostics.Debug.WriteLine("Connection not possible");
+            return null;
+        }
     }
 }

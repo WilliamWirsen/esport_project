@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -13,6 +14,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LeaguesComponent } from './leagues/leagues.component'; 
 import { LeagueComponent } from './league/league.component'; 
+import { MatchComponent } from './match/match.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { LeagueComponent } from './league/league.component';
     FetchDataComponent,
     NavbarComponent,
     LeaguesComponent,
-    LeagueComponent
+    LeagueComponent,
+    MatchComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,7 +36,8 @@ import { LeagueComponent } from './league/league.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'leagues', component: LeaguesComponent }
+      { path: 'leagues', component: LeaguesComponent },
+      { path: 'match/:id', component: MatchComponent}
     ])
   ],
   providers: [],

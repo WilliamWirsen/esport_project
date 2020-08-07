@@ -12,5 +12,7 @@ namespace esport.Models
         public string acronym { get; set; }
         public string imgUrl { get; set; }
         public string name { get; set; }
+        public List<Player> Players { get; set; }
+        public string CurrentVideogame { get; set; }
     }
 }

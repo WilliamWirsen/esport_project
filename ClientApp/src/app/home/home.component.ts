@@ -1,7 +1,11 @@
-import { Component, Inject, NgModule, Pipe,PipeTransform  } from '@angular/core';
+import { Component, Inject, NgModule, Pipe, PipeTransform } from '@angular/core';
 import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 @Pipe({ name: 'safe' })
 
-  export class HomeComponent implements PipeTransform {
+export class HomeComponent implements PipeTransform {
   public matches: Matches[] = [];
   public leagues: Leagues[] = [];
   public games: Games[] = [];
@@ -34,12 +38,11 @@ import { DomSanitizer } from '@angular/platform-browser';
   lolCounter = 0;
 
 
-
-    constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
     //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
     //  this.matches = result;
     //  console.log(this.matches);
-    //}, error => console.error(error));
+    //}, error => console.error(error));    
 
     http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagueMatches').subscribe(result => {
       this.leagues = result;
@@ -60,7 +63,7 @@ import { DomSanitizer } from '@angular/platform-browser';
       this.codCounter = countMatches(this.cod, this.codCounter);
       this.dotaCounter = countMatches(this.dota2, this.dotaCounter);
       this.siegeCounter = countMatches(this.siege, this.siegeCounter);
-      this.lolCounter = countMatches(this.lol, this.lolCounter);      
+      this.lolCounter = countMatches(this.lol, this.lolCounter);
     }, error => console.error(error));
 
     var countMatches = function (array, counter) {
@@ -117,17 +120,15 @@ import { DomSanitizer } from '@angular/platform-browser';
         img: "../../assets/r6-siege.png"
       }
     ]
-    
+
   }
-    transform(url) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(url + "&parent=localhost&muted=true");
-    }
+  transform(url) {
+    if (url.includes("twitch"))
+      url = url + "&parent=localhost&muted=true";
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
 
   ngOnInit() {
-
-    $(document).ready(function () {
-      
-    });
   }
 }
 

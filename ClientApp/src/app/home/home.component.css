@@ -119,6 +119,11 @@ h1 {
   animation: blinking 5s infinite linear; /* IE 10+, Fx 29+ */
 }
 
+.live-card iframe {
+  display: block;
+  width: 100%;
+}
+
 @-webkit-keyframes blinking {
   0% {
     -webkit-box-shadow: 0px 0px 11px 0px rgba(230,107,85,1);
@@ -227,6 +232,7 @@ h1 {
     background: #161a42;
   }
 
+
 .game-header span {
   margin-left: 3rem;
   align-self: center;
@@ -317,6 +323,11 @@ hr {
 .mb-5em {
   margin-bottom: 5em;
 }
+
 .mb-10px {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.cp {
+  cursor: pointer;
 }
