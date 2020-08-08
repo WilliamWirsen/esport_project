@@ -1,7 +1,7 @@
 <main class="main-body">
   <div *ngIf="teams[0] !== undefined">
     <div class="container">
-      <div class="match-container mt-6em">
+      <div class="match-container mt-2em">
         <div class="row">
           <ng-container *ngFor="let team of teams">
             <div class="match-opponent-container col-md-6 col-xs-12">
@@ -9,6 +9,63 @@
                 <h1>{{team.name}} <small>{{team.currentVideogame}}</small></h1>
               </div>
               <div class="row">
+                <div class="" *ngIf="team.players.length === 0">
+                  <div class="col-md-4 col-xs-6">
+                    <div class="card">
+                      <div class="card-image-top">
+                        <img src="../assets/profile-picture.png" alt="Player picture">
+                      </div>
+                      <div class="card-body">
+                        <small>Missing age</small>
+                        <h4 class="card-title">Missing information</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xs-6">
+                    <div class="card">
+                      <div class="card-image-top">
+                        <img src="../assets/profile-picture.png" alt="Player picture">
+                      </div>
+                      <div class="card-body">
+                        <small>Missing age</small>
+                        <h4 class="card-title">Missing information</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xs-6">
+                    <div class="card">
+                      <div class="card-image-top">
+                        <img src="../assets/profile-picture.png" alt="Player picture">
+                      </div>
+                      <div class="card-body">
+                        <small>Missing age</small>
+                        <h4 class="card-title">Missing information</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xs-6">
+                    <div class="card">
+                      <div class="card-image-top">
+                        <img src="../assets/profile-picture.png" alt="Player picture">
+                      </div>
+                      <div class="card-body">
+                        <small>Missing age</small>
+                        <h4 class="card-title">Missing information</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xs-6">
+                    <div class="card">
+                      <div class="card-image-top">
+                        <img src="../assets/profile-picture.png" alt="Player picture">
+                      </div>
+                      <div class="card-body">
+                        <small>Missing age</small>
+                        <h4 class="card-title">Missing information</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div *ngFor="let player of team.players" class="col-xs-6 col-md-4">
                   <div class="card" [attr.data-player-id]="player.id">
                     <div class="card-image-top">
@@ -24,7 +81,7 @@
               </div>
             </div>
           </ng-container>
-        </div>        
+        </div>
       </div>
     </div>
   </div>

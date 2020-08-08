@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -206,12 +207,15 @@ namespace esport.Controllers
                     };
                     var series = new Series
                     {
-                        id = (int)item["serie"]["id"],
-                        name = (string)item["serie"]["name"],
-                        prizepool = (string)item["serie"]["prizepool"],
-                        season = (string)item["serie"]["season"],
-                        year = (int)item["serie"]["year"],
-                        status = (string)item["serie"]["status"]
+                        Id = (int)item["serie"]["id"],
+                        Name = (string)item["serie"]["name"],
+                        Prizepool = (string)item["serie"]["prizepool"],
+                        Season = (string)item["serie"]["season"],
+                        Year = (int)item["serie"]["year"],
+                        Description = (string)item["serie"]["description"],
+                        FullName = (string)item["serie"]["full_name"],
+                        Tier = (string)item["serie"]["tier"],
+                        BeginDate = (DateTime)item["serie"]["begin_at"],
                     };
                     var upcomingGame = new UpcomingMatches
                     {
@@ -240,7 +244,7 @@ namespace esport.Controllers
         [HttpGet("[action]")]
         public List<Team> GetOpponents(int id)
         {
-            var client = new RestClient($"https://api.pandascore.co/matches/{id}/opponents");            
+            var client = new RestClient($"https://api.pandascore.co/matches/{id}/opponents");
             var request = new RestRequest(Method.GET);
             request.AddParameter("Authorization", string.Format("Bearer " + _token),
             ParameterType.HttpHeader);
@@ -283,6 +287,28 @@ namespace esport.Controllers
                     opponents.Add(team);
                 }
                 return opponents;
+            }
+            System.Diagnostics.Debug.WriteLine("Connection not possible");
+            return null;
+        }
+        [HttpGet("action")]
+        public Match GetMatch(int id)
+        {
+            var client = new RestClient($"https://api.pandascore.co/matches/{id}");
+            var request = new RestRequest(Method.GET);
+            request.AddParameter("Authentication", string.Format("Bearer " + _token),
+            ParameterType.HttpHeader);
+            IRestResponse response = client.Execute(request);
+            System.Diagnostics.Debug.WriteLine(response);
+            if (response.IsSuccessful)
+            {
+                var content = JsonConvert.DeserializeObject<JToken>(response.Content);
+                var match = new Match();
+                foreach(var item in content)
+                {
+
+                }
+                return match;
             }
             System.Diagnostics.Debug.WriteLine("Connection not possible");
             return null;

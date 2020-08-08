@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using esport.Models.Enums;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -42,10 +43,10 @@ namespace esport.Models
                 var match = content.SelectTokens("[*]")
                     .Select(matches => new Match
                     {
-                        ID = (int)matches["id"],
+                        Id = (int)matches["id"],
                         Draw = (bool)matches["draw"],
                         Forfeit = (bool)matches["forfeit"],
-                        MatchType = (string)matches["match_type"],
+                        MatchType = (MatchType)matches["match_type"].Type,
                         Name = (string)matches["name"],
                         NumberOfGames = (int)matches["number_of_games"],
                         Opponent1 = opponents[0],

@@ -5,11 +5,13 @@
     <div class="live-games-header" *ngIf="liveGames.length <= 0">
       <h1 style="text-align: center; margin-top:6rem;">No games are live currently</h1>
       <i>Upcoming see the upcoming games below</i>
+
+
     </div>
     <div class="live-cards-container">
       <div class="row">
         <ng-container *ngFor="let live of liveGames">
-          <article class="live-card col-sm-4" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+          <article class="live-card col-sm-3" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
             <ng-container *ngIf="live.streamUrl !== null">
               <iframe [src]="transform(live.streamUrl)"
                       width="350"
@@ -75,7 +77,7 @@
               <ng-container *ngFor="let match of overwatch[i].matches">
                 <div class="match-schedule">
                   <div class="game-schedule-container">
-                    <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                    <div class="row cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                       <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                       <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                       <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -105,7 +107,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of dota2[i].matches">
-                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                <div class="row cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -134,7 +136,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of lol[i].matches">
-                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                <div class="row cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -163,7 +165,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of csgo[i].matches">
-                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                <div class="row cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -192,7 +194,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of rocketLeague[i].matches">
-                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                <div class="row cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -220,7 +222,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of cod[i].matches">
-                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                <div class="row cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>
@@ -248,7 +250,7 @@
             </div>
             <div class="matches-schedule">
               <ng-container *ngFor="let match of siege[i].matches">
-                <div class="row cp" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                <div class="row cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                   <div class="match-opponent col-sm-4"><span>{{match.opponentOne.name}}</span></div>
                   <div class="scheduled-start col-sm-4"><span>{{match.startDate | date:'medium'}}</span></div>
                   <div class="match-opponent col-sm-4"><span>{{match.opponentTwo.name}}</span></div>

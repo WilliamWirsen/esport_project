@@ -268,10 +268,10 @@ h1 {
 }
 
 .match-opponent {
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: #808080;
   text-transform: uppercase;
-  font-weight: 550;
+  font-weight: 600;
 }
 
 .league-header {
@@ -330,4 +330,7 @@ hr {
 
 .cp {
   cursor: pointer;
+}
+.w100 {
+    width:100%;
 }

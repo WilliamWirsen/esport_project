@@ -19,6 +19,7 @@ namespace esport.Models
         public string Url { get; set; }
         public Game Videogame { get; set; }
         public List<UpcomingMatches> Matches { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
     }
 }

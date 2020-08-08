@@ -6,7 +6,7 @@ import { groupBy } from 'rxjs/operators';
 @Component({
   selector: 'match',
   templateUrl: './match.component.html',  
-  styleUrls: ['./match.component.css']
+  styleUrls: ['./match.component.css', '../app.component.css']
 })
 
 export class MatchComponent implements OnInit, OnDestroy {
@@ -18,6 +18,8 @@ export class MatchComponent implements OnInit, OnDestroy {
 
   public teams: Team[] = [];
   public today: number = new Date().getFullYear();
+  public hidden: boolean;
+  public match: object;
 
   opponent1 = [];
   opponent2 = [];
@@ -29,7 +31,7 @@ export class MatchComponent implements OnInit, OnDestroy {
     this._baseUrl = baseUrl;
     this.isLoaded = false;
     console.log(this.isLoaded);
-
+    this.hidden = false;
   }
 
   
@@ -45,7 +47,11 @@ export class MatchComponent implements OnInit, OnDestroy {
       let para = new HttpParams().set("id", this.id.toString());
       this._http.get<Team[]>(this._baseUrl + "api/SampleData/GetOpponents", { headers: headers, params: para }).subscribe(result => {
         this.teams = result;
-        console.log(this.teams[0]);
+        console.log(this.teams);
+      });
+      this._http.get<Team[]>(this._baseUrl + "api/SampleData/GetMatch", { headers: headers, params: para }).subscribe(result => {
+        this.match = result;
+        console.log(this.match);
       })
       this.isLoaded = true;
       console.log(this.isLoaded);
