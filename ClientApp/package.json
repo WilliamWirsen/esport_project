@@ -31,7 +31,17 @@
     "jquery": "^3.5.1",
     "materialize-css": "^1.0.0",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "diff": ">=3.5.0",
+    "hoek": ">=4.2.1",
+    "cryptiles": ">=4.1.2",
+    "serialize-javascript": ">=3.1.0",
+    "stringstream": ">=0.0.6",
+    "minimist": ">=0.2.1",
+    "mem": ">=4.0.0",
+    "braces": ">=2.3.1",
+    "axios": ">=0.18.1",
+    "https-proxy-agent": ">=2.2.3"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.0",
