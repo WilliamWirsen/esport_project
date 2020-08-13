@@ -1,35 +1,83 @@
-.card-image-top img {
-    max-height: 120px;
-}
-.card {
-  position: relative;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid rgba(0,0,0,.125);
-  border-radius: .25rem;
-  height: 290px;
-  margin-bottom: 2em;
-  padding: 1em;
-}
-.card-image-top {
-  width: 100%;
-  border-top-left-radius: calc(.25rem - 1px);
-  border-top-right-radius: calc(.25rem - 1px);
-  display: flex;
-  justify-content: center;
-}
-.card-body {
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  padding: 1.25rem;
+.match-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.card .card-image .card-title {
+  padding: 4px 6px;
+  font-size: 1rem;
+}
 .card-title {
-    padding-bottom: .75rem;
+  background:rgba(7, 7, 7, 0.6);
+}
+
+.card-action a {
+    font-size: 0.8rem;
+}
+.card {
+  height: 236px;
+}
+.card-image {
+  max-height: 135px;
+  width: 135px;
+  overflow: hidden;
+}
+.pl-0 {
+    padding-left: 0;
+}
+.df-jc {
+    display:flex;
+    justify-content: center;
+}
+.fadeIn {
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s; /* Firefox < 16 */
+  -ms-animation: fadein 2s; /* Internet Explorer */
+  -o-animation: fadein 2s; /* Opera < 12.1 */
+  animation: fadein 2s;
+}
+
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

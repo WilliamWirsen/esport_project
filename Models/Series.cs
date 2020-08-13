@@ -1,4 +1,5 @@
 ﻿using esport.Models.Enums;
+using esport.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace esport.Models
 {
-    public class Series
+    public class Series : IBaseInformation
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,8 +22,7 @@ namespace esport.Models
         public int LeagueId { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string Tier { get; set; }
-        public int WinnerId { get; set; }
-
-
+        public Winner Winner { get; set; }
+        public string Slug { get; set; }
     }
 }

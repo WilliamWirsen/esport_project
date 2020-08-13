@@ -11,14 +11,16 @@
     <div class="live-cards-container">
       <div class="row">
         <ng-container *ngFor="let live of liveGames">
-          <article class="live-card col-sm-3" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+          <article class="live-card col-md-3 hoverable" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
             <ng-container *ngIf="live.streamUrl !== null">
-              <iframe [src]="transform(live.streamUrl)"
-                      width="350"
-                      frameborder="0"
-                      scrolling="no"
-                      allowfullscreen="true">
-              </iframe>
+              <div class="video-container">
+                <iframe [src]="transform(live.streamUrl)"
+                        width="350"
+                        frameborder="0"
+                        scrolling="no"
+                        allowfullscreen="true">
+                </iframe>
+              </div>
             </ng-container>
             <a class="live-stream-link" href="{{live.streamUrl !== null ? live.linkUrl : '#'}}" target="_blank">
               <div class="match-wrapper">
@@ -26,7 +28,7 @@
                 <div class="live-match-container">
                   <div class="opponent-one-details">
                     <img class="team-live-icon" src="{{live.opponentOne.imgUrl}}" alt="{{live.opponentOne.name}}" />
-                    <span>{{live.opponentOne.name}}</span>
+                    <p class="ta-c live-name">{{live.opponentOne.name}}</p>
                   </div>
                   <div class="live-match-details">
                     <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
@@ -39,7 +41,7 @@
                   </div>
                   <div class="opponent-two-details">
                     <img class="team-live-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
-                    <span>{{live.opponentTwo.name}}</span>
+                    <p class="live-name ta-c">{{live.opponentTwo.name}}</p>
                   </div>
                 </div>
               </div>

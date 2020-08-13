@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 namespace esport.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public class SampleDataController : Controller
     {
         private static string _token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
@@ -45,17 +46,17 @@ namespace esport.Controllers
 
                     var opponentOne = new Team
                     {
-                        ID = (int)match["opponents"][0]["opponent"]["id"],
-                        acronym = (string)match["opponents"][0]["opponent"]["acronym"],
-                        name = (string)match["opponents"][0]["opponent"]["name"],
-                        imgUrl = (string)match["opponents"][0]["opponent"]["image_url"]
+                        Id = (int)match["opponents"][0]["opponent"]["id"],
+                        Acronym = (string)match["opponents"][0]["opponent"]["acronym"],
+                        Name = (string)match["opponents"][0]["opponent"]["name"],
+                        ImgUrl = (string)match["opponents"][0]["opponent"]["image_url"]
                     };
                     var opponentTwo = new Team
                     {
-                        ID = (int)match["opponents"][1]["opponent"]["id"],
-                        acronym = (string)match["opponents"][1]["opponent"]["acronym"],
-                        name = (string)match["opponents"][1]["opponent"]["name"],
-                        imgUrl = (string)match["opponents"][1]["opponent"]["image_url"]
+                        Id = (int)match["opponents"][1]["opponent"]["id"],
+                        Acronym = (string)match["opponents"][1]["opponent"]["acronym"],
+                        Name = (string)match["opponents"][1]["opponent"]["name"],
+                        ImgUrl = (string)match["opponents"][1]["opponent"]["image_url"]
                     };
 
                     var live = new LiveGame
@@ -193,17 +194,17 @@ namespace esport.Controllers
 
                     var opponentOne = new Team
                     {
-                        ID = (int)item["opponents"][0]["opponent"]["id"],
-                        acronym = (string)item["opponents"][0]["opponent"]["acronym"],
-                        name = (string)item["opponents"][0]["opponent"]["name"],
-                        imgUrl = (string)item["opponents"][0]["opponent"]["image_url"]
+                        Id = (int)item["opponents"][0]["opponent"]["id"],
+                        Acronym = (string)item["opponents"][0]["opponent"]["acronym"],
+                        Name = (string)item["opponents"][0]["opponent"]["name"],
+                        ImgUrl = (string)item["opponents"][0]["opponent"]["image_url"]
                     };
                     var opponentTwo = new Team
                     {
-                        ID = (int)item["opponents"][1]["opponent"]["id"],
-                        acronym = (string)item["opponents"][1]["opponent"]["acronym"],
-                        name = (string)item["opponents"][1]["opponent"]["name"],
-                        imgUrl = (string)item["opponents"][1]["opponent"]["image_url"]
+                        Id = (int)item["opponents"][1]["opponent"]["id"],
+                        Acronym = (string)item["opponents"][1]["opponent"]["acronym"],
+                        Name = (string)item["opponents"][1]["opponent"]["name"],
+                        ImgUrl = (string)item["opponents"][1]["opponent"]["image_url"]
                     };
                     var series = new Series
                     {
@@ -258,9 +259,9 @@ namespace esport.Controllers
                 {
                     var team = new Team()
                     {
-                        acronym = (string)item["acronym"],
-                        imgUrl = (string)item["image_url"],
-                        name = (string)item["name"],
+                        Acronym = (string)item["acronym"],
+                        ImgUrl = (string)item["image_url"],
+                        Name = (string)item["name"],
                         CurrentVideogame = (string)item["current_videogame"]["name"],
                         Players = new List<Player>()
 
@@ -291,26 +292,144 @@ namespace esport.Controllers
             System.Diagnostics.Debug.WriteLine("Connection not possible");
             return null;
         }
-        [HttpGet("action")]
+
+        [HttpGet("[action]")]
         public Match GetMatch(int id)
         {
-            var client = new RestClient($"https://api.pandascore.co/matches/{id}");
-            var request = new RestRequest(Method.GET);
-            request.AddParameter("Authentication", string.Format("Bearer " + _token),
-            ParameterType.HttpHeader);
-            IRestResponse response = client.Execute(request);
-            System.Diagnostics.Debug.WriteLine(response);
-            if (response.IsSuccessful)
+            try
             {
-                var content = JsonConvert.DeserializeObject<JToken>(response.Content);
-                var match = new Match();
-                foreach(var item in content)
+                var client = new RestClient($"https://api.pandascore.co/matches/{id}");
+                var request = new RestRequest(Method.GET);
+                request.AddParameter("Authorization", string.Format("Bearer " + _token),
+                ParameterType.HttpHeader);
+                IRestResponse response = client.Execute(request);
+                System.Diagnostics.Debug.WriteLine(response);
+                if (response.IsSuccessful)
                 {
+                    var content = JsonConvert.DeserializeObject<JToken>(response.Content);
+                    var match = new Match();
+
+                    var opponents = content.SelectTokens("opponents[*]").Select(x => x.SelectToken("opponent"))
+                    .Select(opponent => new Team()
+                    {
+                        Id = (int)opponent["id"],
+                        Acronym = (string)opponent["acronym"],
+                        ImgUrl = (string)opponent["image_url"],
+                        Name = (string)opponent["name"],
+                        Location = (string)opponent["location"],
+                        ModifiedDate = (DateTime)opponent["modified_at"]
+                    })
+                    .ToList();
+
+                    var games = content.SelectTokens("games[*]").Select(game => new Game()
+                    {
+                        BeginDate = (DateTime?)game["begin_at"],
+                        Complete = (bool)game["complete"],
+                        EndDate = (DateTime?)game["end_at"],
+                        Finished = (bool)game["finished"],
+                        Forfeight = (bool)game["forfeit"],
+                        Id = (int)game["id"],
+                        MatchId = (int)game["match_id"],
+                        Name = (string)game["position"],
+                        Status = game["status"].ToObject<MatchStatusType>(),
+                        VideoUrl = (string)game["video_url"],
+                        Winner = new Winner()
+                        {
+                            WinnerId = (int?)game["winner"]["id"],
+                            WinnerType = game["winner"]["type"].ToObject<WinnerType?>()
+                        }
+
+                    }).ToList();
+
+                    match.BeginAt = DateTime.Parse((string)content["begin_at"]);
+                    match.Draw = (bool)content["draw"];
+                    //match.EndAt = (DateTime)item["end_at"];
+                    match.Forfeit = (bool)content["forfeit"];
+                    match.Id = (int)content["id"];
+                    match.Games = games;
+                    match.League = new League()
+                    {
+                        Id = (int)content["league"]["id"],
+                        ImgUrl = (string)content["league"]["image_url"],
+                        ModifiedDate = (DateTime)content["league"]["modified_at"],
+                        Name = (string)content["league"]["name"],
+                        Slug = (string)content["league"]["slug"],
+                        Url = (string)content["league"]["url"]
+                    };
+                    match.Live = new Live()
+                    {
+                        OpenDate = (DateTime?)content["live"]["opens_at"] ?? DateTime.MinValue,
+                        Supported = (bool)content["live"]["supported"],
+                        Url = (string)content["live"]["url"]
+                    };
+                    match.EmbeddedUrl = (string)content["live_embeded_url"];
+                    match.MatchType = content["match_type"].ToObject<MatchType>();
+                    match.ModifiedDate = (DateTime)content["modified_at"];
+                    match.Name = (string)content["name"];
+                    match.NumberOfGames = (int)content["number_of_games"];
+                    match.OfficialStreamUrl = (string)content["official_stream_url"];
+                    match.Opponent1 = opponents[0];
+                    match.Opponent2 = opponents[1];
+                    match.OriginalScheduleDate = (DateTime)content["original_scheduled_at"];
+                    match.Rescheduled = (bool)content["rescheduled"];
+                    match.Results = new List<Result>();
+                    foreach (var result in content["results"])
+                    {
+                        match.Results.Add(new Result()
+                        {
+                            Score = (int)result["score"],
+                            TeamId = (int)result["team_id"]
+                        });
+                    }
+                    match.ScheduledDate = (DateTime)content["scheduled_at"];
+                    match.Series = new Series()
+                    {
+                        BeginDate = (DateTime)content["serie"]["begin_at"],
+                        Description = (string)content["serie"]["description"],
+                        EndDate = (DateTime?)content["serie"]["end_at"] ?? DateTime.MinValue,
+                        FullName = (string)content["serie"]["full_name"],
+                        Id = (int)content["serie"]["id"],
+                        LeagueId = (int)content["serie"]["league_id"],
+                        ModifiedDate = (DateTime)content["serie"]["modified_at"],
+                        Name = (string)content["serie"]["name"],
+                        Season = (string)content["serie"]["season"],
+                        Tier = (string)content["serie"]["tier"],
+                        Year = (int)content["serie"]["year"],
+                        Winner = new Winner()
+                        {
+                            WinnerId = (int?)content["serie"]["winner_id"],
+                            WinnerType = content["serie"]["winner_type"].ToObject<WinnerType?>()
+                        }
+                    };
+                    match.Slug = (string)content["slug"];
+                    match.Status = content["status"].ToObject<MatchStatusType>();
+                    match.Tournament = new Tournament()
+                    {
+                        BeginDate = (DateTime)content["tournament"]["begin_at"],
+                        Id = (int)content["tournament"]["id"],
+                        EndDate = (DateTime?)content["tournament"]["end_at"],
+                        IsLiveSupported = (bool)content["tournament"]["live_supported"],
+                        LeagueId = (int)content["tournament"]["league_id"],
+                        ModifiedDate = (DateTime)content["tournament"]["modified_at"],
+                        Name = (string)content["tournament"]["name"],
+                        Prizepool = (string)content["tournament"]["prizepool"],
+                        SeriesId = (int)content["tournament"]["serie_id"],
+                        Slug = (string)content["tournament"]["slug"],
+                        Winner = new Winner()
+                        {
+                            WinnerId = (int?)content["tournament"]["winner_id"],
+                            WinnerType = content["tournament"]["winner_type"].ToObject<WinnerType?>()
+                        }
+                    };
+                    return match;
 
                 }
-                return match;
             }
-            System.Diagnostics.Debug.WriteLine("Connection not possible");
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
+            }
             return null;
         }
     }

@@ -1,80 +1,62 @@
 <main class="main-body">
   <div *ngIf="teams[0] !== undefined">
     <div class="container">
-      <div class="match-container mt-2em">
-        <div class="row">
-          <ng-container *ngFor="let team of teams">
+      <div class="match-container mt-6em">
+        <div class="match-header">
+          <h4 class="center-align">{{match.name}}</h4>
+          <p>{{match.beginAt | date: 'medium'}}</p>
+          <img *ngIf="match.league.imgUrl !== null" [src]="match.league.imgUrl" alt="{{match.league.name + ' logo'}}" />
+        </div>
+
+
+        <div class="row">          
+          <ng-container *ngFor="let team of teams; index as i">
             <div class="match-opponent-container col-md-6 col-xs-12">
               <div class="page-header">
-                <h1>{{team.name}} <small>{{team.currentVideogame}}</small></h1>
+                <p class="flow-text">{{team.name}} <small>{{team.currentVideogame}}</small></p>
               </div>
               <div class="row">
-                <div class="" *ngIf="team.players.length === 0">
-                  <div class="col-md-4 col-xs-6">
-                    <div class="card">
-                      <div class="card-image-top">
-                        <img src="../assets/profile-picture.png" alt="Player picture">
-                      </div>
-                      <div class="card-body">
-                        <small>Missing age</small>
-                        <h4 class="card-title">Missing information</h4>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="card">
-                      <div class="card-image-top">
-                        <img src="../assets/profile-picture.png" alt="Player picture">
-                      </div>
-                      <div class="card-body">
-                        <small>Missing age</small>
-                        <h4 class="card-title">Missing information</h4>
+                <div class="col-md-12 df-jc" *ngIf="loadingTeamsSpinner">
+                  <div class="preloader-wrapper big active" >
+                    <div class="spinner-layer spinner-blue-only">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div><div class="gap-patch">
+                        <div class="circle"></div>
+                      </div><div class="circle-clipper right">
+                        <div class="circle"></div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-xs-6">
+                </div>                
+                <div *ngIf="team.players.length === 0">
+                  <div class="col-md-4 col-xs-6" *ngFor="let player of numbers">
                     <div class="card">
-                      <div class="card-image-top">
+                      <div class="card-image">
                         <img src="../assets/profile-picture.png" alt="Player picture">
+                        <span class="card-title">Missing name</span>
                       </div>
-                      <div class="card-body">
-                        <small>Missing age</small>
-                        <h4 class="card-title">Missing information</h4>
+                      <div class="card-content">
+                        <p class="text-flow">Missing information</p>
                       </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="card">
-                      <div class="card-image-top">
-                        <img src="../assets/profile-picture.png" alt="Player picture">
-                      </div>
-                      <div class="card-body">
-                        <small>Missing age</small>
-                        <h4 class="card-title">Missing information</h4>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-xs-6">
-                    <div class="card">
-                      <div class="card-image-top">
-                        <img src="../assets/profile-picture.png" alt="Player picture">
-                      </div>
-                      <div class="card-body">
-                        <small>Missing age</small>
-                        <h4 class="card-title">Missing information</h4>
+                      <div class="card-action">
+                        <a href="#">This is a link</a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div *ngFor="let player of team.players" class="col-xs-6 col-md-4">
+                <div *ngFor="let player of team.players" class="col-xs-6 col-md-4 fadeIn">
                   <div class="card" [attr.data-player-id]="player.id">
-                    <div class="card-image-top">
+                    <div class="card-image">
                       <img [src]="player.imgUrl" alt="{{player.name}}">
+                      <span class="card-title">{{player.firstName !== null || player.lastName !== null ? player.firstName + " " + player.lastName + " | " : ''}} <small> "{{player.name}}"</small></span>
                     </div>
-                    <div class="card-body">
-                      <small>{{player.birthYear !== null ? today - player.birthYear + ' years old' : ''}}</small>
-                      <h4 class="card-title">{{player.firstName !== null || player.lastName !== null ? player.firstName + " " + player.lastName + " | " : ''}} <small> "{{player.name}}"</small></h4>
-                      <p class="card-text">{{player.nationality !== null ? player.nationality + " | " + player.homeTown : player.homeTown}}</p>
+                    <div class="card-content">
+                      <ul class="pl-0">
+                        <li>A: <small>{{player.birthYear !== null ? today - player.birthYear + ' years old' : '-'}}</small></li>
+                        <li>N: <small>{{player.nationality !== null ? player.nationality : '-'}}</small></li>
+                        <li>H: <small>{{player.homeTown !== null ? player.homeTown : '-'}}</small></li>
+                      </ul>
                     </div>
                   </div>
                 </div>

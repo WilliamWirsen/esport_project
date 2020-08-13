@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace esport.Models.Enums
 {
-    [JsonConverter(typeof(StringEnumConverter))]
     public enum MatchStatusType
     {
         [EnumMember(Value = "unknown")]

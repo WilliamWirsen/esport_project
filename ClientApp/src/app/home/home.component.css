@@ -334,3 +334,9 @@ hr {
 .w100 {
     width:100%;
 }
+.ta-c {
+    text-align:center;
+}
+.live-name {
+  font-size:1rem;
+}

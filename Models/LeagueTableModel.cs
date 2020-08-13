@@ -33,10 +33,10 @@ namespace esport.Models
                 var opponents = content.SelectTokens("opponent[*]")
                     .Select(opponent => new Team
                     {
-                        ID = (int)opponent["id"],
-                        acronym = (string)opponent["acronym"],
-                        imgUrl = (string)opponent["image_url"],
-                        name = (string)opponent["name"]
+                        Id = (int)opponent["id"],
+                        Acronym = (string)opponent["acronym"],
+                        ImgUrl = (string)opponent["image_url"],
+                        Name = (string)opponent["name"]
                     })
                     .ToList();
 
@@ -46,7 +46,7 @@ namespace esport.Models
                         Id = (int)matches["id"],
                         Draw = (bool)matches["draw"],
                         Forfeit = (bool)matches["forfeit"],
-                        MatchType = (MatchType)matches["match_type"].Type,
+                        //MatchType = (MatchType)matches["match_type"].Type,
                         Name = (string)matches["name"],
                         NumberOfGames = (int)matches["number_of_games"],
                         Opponent1 = opponents[0],
