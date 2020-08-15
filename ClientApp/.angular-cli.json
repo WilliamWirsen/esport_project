@@ -19,12 +19,16 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/bulma/css/bulma.min.css",
+        "../node_modules/bulma-checkradio/dist/css/bulma-checkradio.min.css",
+        "../node_modules/@creativebulma/bulma-divider/dist/bulma-divider.min.css",
+        "../node_modules/@creativebulma/bulma-badge/dist/bulma-badge.min.css",
+        "../node_modules/@fortawesome/fontawesome-free/css/all.min.css",
         "../node_modules/materialize-css/dist/css/materialize.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/bootstrap/dist/js/bootstrap.js",
+        "../node_modules/@fortawesome/fontawesome-free/js/all.min.js",
         "../node_modules/materialize-css/dist/js/materialize.js"
       ],
       "environmentSource": "environments/environment.ts",
