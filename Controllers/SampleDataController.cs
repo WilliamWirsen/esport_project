@@ -2,6 +2,7 @@ using EnumsNET;
 using esport.Models;
 using esport.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -19,12 +20,19 @@ namespace esport.Controllers
     public class SampleDataController : Controller
     {
         private static string _token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
+        private IMemoryCache _cache;
+        private IMemoryCache _leaguesCache;
 
+
+        public SampleDataController(IMemoryCache memoryCache)
+        {
+            _cache = memoryCache;
+        }
 
         [HttpGet("[action]")]
         public IActionResult GetLiveMatches()
         {
-            var client = new RestClient($"https://api.pandascore.co//lives?per_page=3&token=" + _token);
+            var client = new RestClient($"https://api.pandascore.co//lives?per_page=10&token=" + _token);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
 
@@ -93,8 +101,31 @@ namespace esport.Controllers
         [HttpGet("[action]")]
         public IActionResult GetLeagueMatches()
         {
-            var leagues = GetLeagues();
-            var matches = GetMatches();
+            List<UpcomingMatches> matches = new List<UpcomingMatches>();
+            List<League> leagues = new List<League>();
+            if (!_cache.TryGetValue("Matches", out matches))
+            {
+                matches = GetMatches();
+
+                // Set cache options.
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(15));
+
+                // Save data in cache.
+                _cache.Set("Matches", matches, cacheEntryOptions);
+            }
+            if (!_cache.TryGetValue("Leagues", out leagues))
+            {
+                leagues = GetLeagues();
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(15));
+
+                // Save data in cache.
+                _cache.Set("Leagues", leagues, cacheEntryOptions);
+            }
+
             if (leagues.Any() && matches.Any())
             {
                 List<League> leagueList = new List<League>();
@@ -121,127 +152,148 @@ namespace esport.Controllers
         }
         private List<League> GetLeagues()
         {
-            var client = new RestClient($"https://api.pandascore.co//leagues?per_page=100&token=" + _token);
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-
-            if (response.IsSuccessful)
+            JToken content = null;
+            List<League> allLeagues = new List<League>();
+            var index = 0;
+            do
             {
-                var content = JsonConvert.DeserializeObject<JToken>(response.Content);
-                List<League> leagues = new List<League>();
-                foreach (var item in content)
+                var client = new RestClient($"https://api.pandascore.co//leagues?page={index}&per_page=100");
+                var request = new RestRequest(Method.GET);
+                request.AddParameter("Authorization", string.Format("Bearer " + _token),
+                ParameterType.HttpHeader);
+                IRestResponse response = client.Execute(request);
+
+                if (response.IsSuccessful)
                 {
-                    var league = new League
+                    content = JsonConvert.DeserializeObject<JToken>(response.Content);
+                    List<League> tempLeagues = new List<League>();
+                    foreach (var item in content)
                     {
-                        Id = (int)item["id"],
-                        ImgUrl = (string)item["image_url"],
-                        Name = (string)item["name"],
-                        Slug = (string)item["videogame"]["slug"],
-                        Url = (string)item["url"],
-                        Videogame = new Game
+                        var league = new League
                         {
-                            Id = (int)item["videogame"]["id"],
-                            Name = (string)item["videogame"]["name"],
+                            Id = (int)item["id"],
+                            ImgUrl = (string)item["image_url"],
+                            Name = (string)item["name"],
                             Slug = (string)item["videogame"]["slug"],
-                        }
-                    };
-                    leagues.Add(league);
-                }
-                return leagues;
-
-            }
-            System.Diagnostics.Debug.WriteLine("Connection not possible");
-            return null;
-
-        }
-
-        public List<UpcomingMatches> GetMatches()
-        {
-            var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token=" + _token + "&filter[detailed_stats]=true&per_page=100&range[begin_at]=" + DateTime.Now + "," + DateTime.Now.AddMonths(1));
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            System.Diagnostics.Debug.WriteLine(response);
-            if (response.IsSuccessful)
-            {
-                var content = JsonConvert.DeserializeObject<JToken>(response.Content);
-                List<UpcomingMatches> upcomingGames = new List<UpcomingMatches>();
-
-                foreach (var item in content)
-                {
-                    if (!item["opponents"].HasValues)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Array is empty");
-                        continue;
+                            Url = (string)item["url"],
+                            Videogame = new Game
+                            {
+                                Id = (int)item["videogame"]["id"],
+                                Name = (string)item["videogame"]["name"],
+                                Slug = (string)item["videogame"]["slug"],
+                            }
+                        };
+                        tempLeagues.Add(league);
                     }
-                    else if (item["opponents"].Count<object>() <= 1)
-                        continue;
+                    allLeagues.AddRange(tempLeagues);
+                    index++;
+                } else
+                {
+                    System.Diagnostics.Debug.WriteLine("Connection not possible");
+                    return null;
+                }                
+            } while (content.HasValues);
 
-                    //System.Diagnostics.Debug.WriteLine(item["opponents"].Count<object>());
-                    var league = new League
-                    {
-                        Id = (int)item["league"]["id"],
-                        ImgUrl = (string)item["league"]["image_url"],
-                        Name = (string)item["league"]["name"],
-                        Slug = (string)item["videogame"]["slug"],
-                        Url = (string)item["league"]["url"],
-                        Videogame = new Game
-                        {
-                            Id = (int)item["videogame"]["id"],
-                            Name = (string)item["videogame"]["name"],
-                            Slug = (string)item["videogame"]["slug"],
-                        }
-                    };
+            return allLeagues;
 
-                    var opponentOne = new Team
-                    {
-                        Id = (int)item["opponents"][0]["opponent"]["id"],
-                        Acronym = (string)item["opponents"][0]["opponent"]["acronym"],
-                        Name = (string)item["opponents"][0]["opponent"]["name"],
-                        ImgUrl = (string)item["opponents"][0]["opponent"]["image_url"]
-                    };
-                    var opponentTwo = new Team
-                    {
-                        Id = (int)item["opponents"][1]["opponent"]["id"],
-                        Acronym = (string)item["opponents"][1]["opponent"]["acronym"],
-                        Name = (string)item["opponents"][1]["opponent"]["name"],
-                        ImgUrl = (string)item["opponents"][1]["opponent"]["image_url"]
-                    };
-                    var series = new Series
-                    {
-                        Id = (int)item["serie"]["id"],
-                        Name = (string)item["serie"]["name"],
-                        Prizepool = (string)item["serie"]["prizepool"],
-                        Season = (string)item["serie"]["season"],
-                        Year = (int)item["serie"]["year"],
-                        Description = (string)item["serie"]["description"],
-                        FullName = (string)item["serie"]["full_name"],
-                        Tier = (string)item["serie"]["tier"],
-                        BeginDate = (DateTime)item["serie"]["begin_at"],
-                    };
-                    var upcomingGame = new UpcomingMatches
-                    {
-                        ID = (int)item["id"],
-                        StartDate = (string)item["begin_at"],
-                        Draw = (bool)item["draw"],
-                        MatchType = (string)item["match_type"],
-                        Name = (string)item["name"],
-                        NumberOfGames = (int)item["number_of_games"],
-                        Tournament = (string)item["tournament"]["name"],
-                        League = league,
-                        OpponentOne = opponentOne,
-                        OpponentTwo = opponentTwo,
-                        Series = series
-                    };
-                    upcomingGames.Add(upcomingGame);
-                    System.Diagnostics.Debug.WriteLine(upcomingGame);
-                }
-
-                return upcomingGames;
-
-            }
-            System.Diagnostics.Debug.WriteLine("Connection not possible");
-            return null;
         }
+
+        private List<UpcomingMatches> GetMatches()
+        {
+            List<UpcomingMatches> allUpcomingMatches = new List<UpcomingMatches>();
+            JToken content = null;
+            var index = 0;
+            do
+            {
+                var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token={_token}&filter[detailed_stats]=true&page={index}&per_page=100&range[begin_at]=" + DateTime.Now + "," + DateTime.Now.AddMonths(1));
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    content = JsonConvert.DeserializeObject<JToken>(response.Content);
+                    allUpcomingMatches.AddRange(MapUpcomingMatch(content));
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Connection not possible");
+                    return null;
+                }
+                index++;
+            } while (content.HasValues);
+            return allUpcomingMatches;
+        }
+
+        private List<UpcomingMatches> MapUpcomingMatch(JToken content)
+        {
+            List<UpcomingMatches> upcomingGames = new List<UpcomingMatches>();
+            foreach (var item in content)
+            {
+                if (!item["opponents"].HasValues)
+                {
+                    System.Diagnostics.Debug.WriteLine("Array is empty");
+                    continue;
+                }
+                else if (item["opponents"].Count<object>() <= 1)
+                    continue;
+                var league = new League
+                {
+                    Id = (int)item["league"]["id"],
+                    ImgUrl = (string)item["league"]["image_url"],
+                    Name = (string)item["league"]["name"],
+                    Slug = (string)item["videogame"]["slug"],
+                    Url = (string)item["league"]["url"],
+                    Videogame = new Game
+                    {
+                        Id = (int)item["videogame"]["id"],
+                        Name = (string)item["videogame"]["name"],
+                        Slug = (string)item["videogame"]["slug"],
+                    }
+                };
+                var opponentOne = new Team
+                {
+                    Id = (int)item["opponents"][0]["opponent"]["id"],
+                    Acronym = (string)item["opponents"][0]["opponent"]["acronym"],
+                    Name = (string)item["opponents"][0]["opponent"]["name"],
+                    ImgUrl = (string)item["opponents"][0]["opponent"]["image_url"]
+                };
+                var opponentTwo = new Team
+                {
+                    Id = (int)item["opponents"][1]["opponent"]["id"],
+                    Acronym = (string)item["opponents"][1]["opponent"]["acronym"],
+                    Name = (string)item["opponents"][1]["opponent"]["name"],
+                    ImgUrl = (string)item["opponents"][1]["opponent"]["image_url"]
+                };
+                var series = new Series
+                {
+                    Id = (int)item["serie"]["id"],
+                    Name = (string)item["serie"]["name"],
+                    Prizepool = (string)item["serie"]["prizepool"],
+                    Season = (string)item["serie"]["season"],
+                    Year = (int)item["serie"]["year"],
+                    Description = (string)item["serie"]["description"],
+                    FullName = (string)item["serie"]["full_name"],
+                    Tier = (string)item["serie"]["tier"],
+                    BeginDate = (DateTime)item["serie"]["begin_at"],
+                };
+                var upcomingGame = new UpcomingMatches
+                {
+                    ID = (int)item["id"],
+                    StartDate = (string)item["begin_at"],
+                    Draw = (bool)item["draw"],
+                    MatchType = (string)item["match_type"],
+                    Name = (string)item["name"],
+                    NumberOfGames = (int)item["number_of_games"],
+                    Tournament = (string)item["tournament"]["name"],
+                    League = league,
+                    OpponentOne = opponentOne,
+                    OpponentTwo = opponentTwo,
+                    Series = series
+                };
+                upcomingGames.Add(upcomingGame);
+            }
+            return upcomingGames;
+        }
+
         [HttpGet("[action]")]
         public List<Team> GetOpponents(int id)
         {
