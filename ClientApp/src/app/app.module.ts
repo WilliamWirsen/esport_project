@@ -40,5 +40,6 @@ import { TestComponent } from './test/test.component';
     ])
   ],
   providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
