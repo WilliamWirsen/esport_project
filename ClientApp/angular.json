@@ -65,7 +65,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "esport:build"
+            "browserTarget": "esport:build",
+            "port": 52419
           },
           "configurations": {
             "production": {

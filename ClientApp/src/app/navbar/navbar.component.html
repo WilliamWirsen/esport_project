@@ -11,19 +11,19 @@
     </a>
   </div>
   <div class="navbar-menu">
-    <a class="navbar-item" [routerLink]='["/"]' (click)='collapse()' [routerLinkActive]='["is-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+    <a class="navbar-item" [routerLink]='["/"]'  [routerLinkActive]='["is-active"]' [routerLinkActiveOptions]='{ exact: true }'>
       <span class='icon'>
         <i class="fas fa-home" aria-hidden="true"></i>
       </span>
       <span>Home</span>
     </a>
-    <a class="navbar-item" [routerLink]='["/counter"]' (click)='collapse()' [routerLinkActive]='["is-active"]'>
+    <a class="navbar-item" [routerLink]='["/counter"]'  [routerLinkActive]='["is-active"]'>
       <span class='icon'>
         <i class="fas fa-calculator"></i>
       </span>
       <span>Counter</span>
     </a>
-    <a  [routerLinkActive]='["is-active"]' class="navbar-item" [routerLink]='["/leagues"]' (click)='collapse()'>
+    <a  [routerLinkActive]='["is-active"]' class="navbar-item" [routerLink]='["/leagues"]' >
       <span class='icon'>
         <i class="fas fa-chess-king"></i>
       </span>

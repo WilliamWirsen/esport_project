@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { RouterModule } from "@angular/router";
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -12,18 +12,20 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { LeaguesComponent } from './leagues/leagues.component'; 
 import { LeagueComponent } from './league/league.component'; 
 import { MatchComponent } from './match/match.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     CounterComponent,
     FetchDataComponent,
     NavbarComponent,
     LeaguesComponent,
     LeagueComponent,
-    MatchComponent
+    MatchComponent,
+    TestComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -38,6 +40,5 @@ import { MatchComponent } from './match/match.component';
     ])
   ],
   providers: [],
-  bootstrap: [AppComponent]
 })
 export class AppModule { }

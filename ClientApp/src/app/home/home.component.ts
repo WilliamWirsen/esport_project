@@ -1,21 +1,21 @@
-import { Component, Inject, NgModule, Pipe, PipeTransform } from '@angular/core';
+import { Component, Inject, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
+  templateUrl: "./home.component.html",
   styleUrls: ['./home.component.css'],
 })
 
-@Pipe({ name: 'safe' })
+//@Pipe({ name: 'safe' })
 
-export class HomeComponent implements PipeTransform {
+export class HomeComponent implements PipeTransform, OnInit {
   public matches: Matches[] = [];
   public leagues: Leagues[] = [];
   public games: Games[] = [];
-  public liveGames: LiveGames[] = [];
+  public liveGames: any = [];
   today: number = Date.now();
 
   overwatch = [];
@@ -34,9 +34,13 @@ export class HomeComponent implements PipeTransform {
   siegeCounter = 0;
   lolCounter = 0;
 
-  liveGames2 = [];
+  running = [];
+  finished = [];
+  upcoming = [];
+  
 
-
+  ngOnInit(): void {
+  }
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
     //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
     //  this.matches = result;
@@ -80,6 +84,7 @@ export class HomeComponent implements PipeTransform {
       console.log("--- end live games ---")
       console.log(this.liveGames.length);
       this.liveGames = groupBy(this.liveGames, 'status');
+
       console.log(this.liveGames);
     }, error => console.error(error));
 
@@ -128,15 +133,17 @@ export class HomeComponent implements PipeTransform {
       }, {});
     };
 
+
   }
+  
+
   transform(url) {
     if (url.includes("twitch"))
       url = url + "&parent=localhost&muted=true";
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  ngOnInit() {
-  }
+  
 }
 
 
@@ -157,6 +164,9 @@ interface LiveGames {
   season: string;
   numberOfGames: number;
   status: string;
+  not_started: any[];
+  running: any[];
+  finished: any[];
 }
 interface Games {
   id: string;

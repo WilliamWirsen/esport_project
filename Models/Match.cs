@@ -24,7 +24,6 @@ namespace esport.Models
         public List<Game> Games { get; set; }
         public Live Live { get; set; }
         public string EmbeddedUrl { get; set; }
-        [Newtonsoft.Json.JsonConverter(typeof(JsonStringEnumConverter))]
         public MatchType? MatchType { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string OfficialStreamUrl { get; set; }
