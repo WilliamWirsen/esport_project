@@ -10,6 +10,7 @@ using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http.Headers;
 
@@ -21,9 +22,6 @@ namespace esport.Controllers
     {
         private static string _token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
         private IMemoryCache _cache;
-        private IMemoryCache _leaguesCache;
-
-
         public SampleDataController(IMemoryCache memoryCache)
         {
             _cache = memoryCache;
@@ -35,6 +33,7 @@ namespace esport.Controllers
             var client = new RestClient($"https://api.pandascore.co//lives?per_page=10&token=" + _token);
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
+            TextInfo myTI = new CultureInfo("sv-SE", false).TextInfo;
 
             if (response.IsSuccessful)
             {
@@ -85,9 +84,11 @@ namespace esport.Controllers
                         season = (string)match["tournament"]["name"],
                         name = (string)match["league"]["name"],
                         league = league,
-                        status = (string)match["status"]
+                        status = (string)match["status"],
+                        Videogame = ((string)item["event"]["game"]).Replace("-", " ")
                     };
 
+                    live.Videogame = myTI.ToTitleCase(live.Videogame);
                     liveGames.Add(live);
                 }
                 return Ok(liveGames);

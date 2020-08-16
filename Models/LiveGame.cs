@@ -25,5 +25,6 @@ namespace esport.Models
         public string season { get; set; }
         public int numberOfGames { get; set; }
         public string status { get; set; }
+        public string Videogame { get; set; }
     }
 }

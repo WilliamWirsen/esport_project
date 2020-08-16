@@ -1,10 +1,7 @@
 import { Component, Inject, NgModule, Pipe, PipeTransform } from '@angular/core';
-import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -37,6 +34,8 @@ export class HomeComponent implements PipeTransform {
   siegeCounter = 0;
   lolCounter = 0;
 
+  liveGames2 = [];
+
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
     //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
@@ -49,7 +48,7 @@ export class HomeComponent implements PipeTransform {
       console.log("--- Leagues ---");
       console.log(this.leagues);
       console.log("--- End Leagues ---");
-      this.overwatch = this.leagues.filter(item => item.slug == "overwatch");
+      this.overwatch = this.leagues.filter(item => item.slug == "ow");
       this.rocketLeague = this.leagues.filter(item => item.slug == "rl");
       this.cod = this.leagues.filter(item => item.slug == "cod-mw");
       this.dota2 = this.leagues.filter(item => item.slug == "dota-2");
@@ -73,13 +72,15 @@ export class HomeComponent implements PipeTransform {
       return counter;
     }
 
+
     http.get<LiveGames[]>(baseUrl + 'api/SampleData/GetLiveMatches').subscribe(result => {
       this.liveGames = result;
       console.log("--- Live games ---")
       console.log(this.liveGames);
       console.log("--- end live games ---")
       console.log(this.liveGames.length);
-
+      this.liveGames = groupBy(this.liveGames, 'status');
+      console.log(this.liveGames);
     }, error => console.error(error));
 
     this.games = [
@@ -120,6 +121,12 @@ export class HomeComponent implements PipeTransform {
         img: "../../assets/r6-siege.png"
       }
     ]
+    var groupBy = function (xs, key) {
+      return xs.reduce(function (rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x);
+        return rv;
+      }, {});
+    };
 
   }
   transform(url) {

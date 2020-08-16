@@ -13,10 +13,9 @@ h1 {
   max-width: 86px;
   align-self: center;
 }
-
-.live-card {
-  margin: 1rem;
-  padding: 1rem;
+.team-live-upcoming-icon {
+  max-width: 40px;
+  align-self: center;
 }
 
 .match-wrapper {
@@ -67,10 +66,14 @@ h1 {
   max-width: 8rem;
 }
 
+.live-match-upcoming-details {
+  margin: .5em;
+  justify-content: center;
+}
+
 .live-status {
   color: #090874;
   text-transform: uppercase;
-  font-style: italic;
   font-size: .9rem;
 }
 
@@ -187,7 +190,6 @@ h1 {
 }
 
 .league-information-container span {
-  font-size: 1.5rem;
   color: #f2f2f2;
   align-self: center;
   margin-left: 1rem;

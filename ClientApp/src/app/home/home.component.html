@@ -1,7 +1,7 @@
 <main class="main-body">
   <ng-container>
-    
-    <section class="hero is-medium is-dark is-bold">
+
+    <section class="hero is-small is-dark is-bold">
       <h1 class="ta-c" *ngIf="liveGames.length > 0">Live right now!</h1>
 
       <div class="live-games-header" *ngIf="liveGames.length <= 0">
@@ -10,8 +10,35 @@
       </div>
       <div class="hero-body">
         <div class="columns">
-          <ng-container *ngFor="let live of liveGames">
-            <article class="live-card column is-one-fourth" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+          <div class="live-finished column is-one-quarter" *ngIf="liveGames.finished !== undefined">
+            <article class="column" *ngFor="let live of liveGames.finished" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+              <a class="live-stream-link" href="{{live.streamUrl !== null ? live.linkUrl : '#'}}" target="_blank">
+                <div class="match-wrapper">
+                  <div class="live-match-container">
+                    <div class="opponent-one-details">
+                      <img class="team-live-upcoming-icon" src="{{live.opponentOne.imgUrl}}" alt="{{live.opponentOne.name}}" />
+                      <p class="ta-c live-name has-text-light is-size-7-tablet">{{live.opponentOne.name}}</p>
+                    </div>
+                    <div class="live-match-details live-match-upcoming-details">
+                      <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
+                      <span class="live-result">{{live.opponentOneResult}} - {{live.opponentTwoResult}}</span>
+                      <span class="live-status match-finished">Finished</span>
+                    </div>
+                    <div class="opponent-two-details">
+                      <img class="team-live-upcoming-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
+                      <p class="live-name ta-c has-text-light is-size-7-tablet">{{live.opponentTwo.name}}</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <div class="league-information-container">
+                <img class="live-league-logo" src="{{live.league.imgUrl}}" alt="{{live.league.name}}" />
+                <span class="is-size-6-tablet">{{live.name}} | {{live.season}} | {{live.videogame}}</span>
+              </div>
+            </article>
+          </div>
+          <ng-container *ngFor="let live of liveGames.running">
+            <article class="column" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
               <ng-container *ngIf="live.streamUrl !== null">
                 <figure class="image is-16by9 m-none">
                   <iframe class="has-ratio" [src]="transform(live.streamUrl)"
@@ -34,10 +61,9 @@
                       <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
                       <span class="live-result">{{live.opponentOneResult}} - {{live.opponentTwoResult}}</span>
                       <span class="live-begin-date">{{live.startDate | date: 'shortTime'}}</span>
-                      <span class="live-status" *ngIf="live.isActive && live.status !== 'finished' && live.status !== 'not_started'">Running</span>
-                      <span class="live-status match-finished" *ngIf="live.isActive && live.status === 'finished'">Finished</span>
-                      <span class="live-status match-finished" *ngIf="live.isActive && live.status === 'not_started'">Upcoming</span>
-                      <span class="not-live-status" *ngIf="!live.isActive">Not running</span>
+                      <span class="live-status" *ngIf="live.status !== 'finished' && live.status !== 'not_started'">Running</span>
+                      <span class="live-status match-finished" *ngIf="live.status === 'finished'">Finished</span>
+                      <span class="live-status match-finished" *ngIf="live.status === 'not_started'">Upcoming</span>
                     </div>
                     <div class="opponent-two-details">
                       <img class="team-live-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
@@ -48,10 +74,50 @@
               </a>
               <div class="league-information-container">
                 <img class="live-league-logo" src="{{live.league.imgUrl}}" alt="{{live.league.name}}" />
-                <span>{{live.name}} | {{live.season}} </span>
+                <span class="is-size-5-tablet">{{live.name}} | {{live.season}} | {{live.videogame}}</span>
               </div>
             </article>
           </ng-container>
+          <div [ngClass]="liveGames.running !== null ? 'column is-one-quarter': 'column'" *ngIf="liveGames.not_started !== undefined">
+            <div class="columns">
+              <article class="column" *ngFor="let live of liveGames.not_started" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+                <ng-container *ngIf="live.streamUrl !== null && liveGames.running == null">
+                  <figure class="image is-16by9 m-none">
+                    <iframe class="has-ratio" [src]="transform(live.streamUrl)"
+                            width="640" height="360"
+                            frameborder="0"
+                            scrolling="no"
+                            allowfullscreen="true">
+                    </iframe>
+                  </figure>
+                </ng-container>
+                <a class="live-stream-link" href="{{live.streamUrl !== null ? live.linkUrl : '#'}}" target="_blank">
+                  <div class="match-wrapper">
+                    <div class="live-match-container">
+                      <div class="opponent-one-details">
+                        <img class="team-live-upcoming-icon" src="{{live.opponentOne.imgUrl}}" alt="{{live.opponentOne.name}}" />
+                        <p class="ta-c live-name has-text-light is-size-7-tablet">{{live.opponentOne.name}}</p>
+                      </div>
+                      <div class="live-match-details live-match-upcoming-details">
+                        <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
+                        <span class="live-begin-date">{{live.startDate | date: 'shortTime'}}</span>
+                        <span class="live-status match-finished">Upcoming</span>
+                        <span class="not-live-status" *ngIf="!live.isActive">Not running</span>
+                      </div>
+                      <div class="opponent-two-details">
+                        <img class="team-live-upcoming-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
+                        <p class="live-name ta-c has-text-light is-size-7-tablet">{{live.opponentTwo.name}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+                <div class="league-information-container">
+                  <img class="live-league-logo" src="{{live.league.imgUrl}}" alt="{{live.league.name}}" />
+                  <span class="is-size-6-tablet">{{live.name}} | {{live.season}} | {{live.videogame}}</span>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -71,21 +137,18 @@
         </div>
         <div class="schedule-body">
           <div class="league-wrapper">
-            <ng-container *ngFor="let upcomingGames of overwatch; index as i">
+            <ng-container *ngFor="let upcomingGame of overwatch; index as i">
               <div class="league-header">
-                <img class="league-logo" src="{{upcomingGames.imgUrl}}" alt="{{upcomingGames.name}}" />
+                <img class="league-logo" src="{{upcomingGame.imgUrl}}" alt="{{upcomingGame.name}}" />
                 <a routerLink="/league/{{upcomingGame.id}}" routerLinkActive="active">{{upcomingGame.name}}</a>
               </div>
               <div class="matches-schedule">
                 <ng-container *ngFor="let match of overwatch[i].matches">
-                  <div class="match-schedule">
-                    <div class="game-schedule-container">
-                      <div class="columns cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
-                        <div class="match-opponent column"><span>{{match.opponentOne.name}}</span></div>
-                        <div class="scheduled-start column"><span>{{match.startDate | date:'medium'}}</span></div>
-                        <div class="match-opponent column"><span>{{match.opponentTwo.name}}</span></div>
-                      </div>
-                    </div>
+                  <div class="columns cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                    <div class="match-opponent column"><span>{{match.opponentOne.name}}</span></div>
+                    <div class="scheduled-start column"><span>{{match.startDate | date:'medium'}}</span></div>
+                    <div class="match-opponent column"><span>{{match.opponentTwo.name}}</span></div>
+                    <div ng-if="overwatch[i].matches.length > 1"><hr /></div>
                   </div>
                 </ng-container>
               </div>

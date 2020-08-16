@@ -7,16 +7,14 @@
           <p>{{match.beginAt | date: 'medium'}}</p>
           <img *ngIf="match.league.imgUrl !== null" [src]="match.league.imgUrl" alt="{{match.league.name + ' logo'}}" />
         </div>
-
-
-        <div class="row">          
+        <div class="columns">          
           <ng-container *ngFor="let team of teams; index as i">
-            <div class="match-opponent-container col-md-6 col-xs-12">
+            <div class="match-opponent-container column">
               <div class="page-header">
                 <p class="flow-text">{{team.name}} <small>{{team.currentVideogame}}</small></p>
               </div>
-              <div class="row">
-                <div class="col-md-12 df-jc" *ngIf="loadingTeamsSpinner">
+              <div class="columns is-multiline">
+                <div class="column is-full df-jc" *ngIf="loadingTeamsSpinner">
                   <div class="preloader-wrapper big active" >
                     <div class="spinner-layer spinner-blue-only">
                       <div class="circle-clipper left">
@@ -28,9 +26,10 @@
                       </div>
                     </div>
                   </div>
-                </div>                
+                </div>
+                <!-- Placeholder icons if not players found -->
                 <div *ngIf="team.players.length === 0">
-                  <div class="col-md-4 col-xs-6" *ngFor="let player of numbers">
+                  <div class="column is-half" *ngFor="let player of numbers">
                     <div class="card">
                       <div class="card-image">
                         <img src="../assets/profile-picture.png" alt="Player picture">
@@ -45,8 +44,34 @@
                     </div>
                   </div>
                 </div>
-                <div *ngFor="let player of team.players" class="col-xs-6 col-md-4 fadeIn">
-                  <div class="card" [attr.data-player-id]="player.id">
+                <article *ngFor="let player of team.players" class="column is-4 fadeIn">
+                  <div class="card">
+                    <div class="card-image">
+                      <figure class="image is-5by3">
+                        <img class="has-ratio" [src]="player.imgUrl" alt="{{player.name}} image">
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-content">
+                          <span class="tag is-danger" *ngIf="player.role !== null">{{player.role}}</span>
+                          <p class="title is-4" *ngIf="player.firstName !== null || player.lastName !== null">{{player.firstName + ' ' + player.lastName}}</p>
+                          <p class="subtitle is-6 mt-0">{{player.name}}</p>
+                        </div>
+                      </div>
+
+                      <div class="content">
+                        <ul class="ml-0">
+                          <li><strong>Nationality:</strong> {{player.nationality !== null ? player.nationality : '-'}}</li>
+                          <li><strong>Hometown:</strong> {{player.homeTown !== null ? player.homeTown : '-'}}</li>
+                          <li><strong>Age:</strong> {{player.birthYear !== null ? today - player.birthYear + ' years old' : '-'}}</li>
+                        </ul>                        
+                        <br>
+                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                      </div>
+                    </div>
+                  </div>
+                  <!--<div class="card" [attr.data-player-id]="player.id">
                     <div class="card-image">
                       <img [src]="player.imgUrl" alt="{{player.name}}">
                       <span class="card-title">{{player.firstName !== null || player.lastName !== null ? player.firstName + " " + player.lastName + " | " : ''}} <small> "{{player.name}}"</small></span>
@@ -58,8 +83,8 @@
                         <li>H: <small>{{player.homeTown !== null ? player.homeTown : '-'}}</small></li>
                       </ul>
                     </div>
-                  </div>
-                </div>
+                  </div>-->
+                </article>
               </div>
             </div>
           </ng-container>

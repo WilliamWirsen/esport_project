@@ -3,26 +3,6 @@
     flex-direction: column;
     align-items: center;
 }
-
-.card .card-image .card-title {
-  padding: 4px 6px;
-  font-size: 1rem;
-}
-.card-title {
-  background:rgba(7, 7, 7, 0.6);
-}
-
-.card-action a {
-    font-size: 0.8rem;
-}
-.card {
-  height: 236px;
-}
-.card-image {
-  max-height: 135px;
-  width: 135px;
-  overflow: hidden;
-}
 .pl-0 {
     padding-left: 0;
 }
@@ -37,7 +17,12 @@
   -o-animation: fadein 2s; /* Opera < 12.1 */
   animation: fadein 2s;
 }
-
+.mt-0 {
+    margin-top: 0;
+}
+.ml-0 {
+    margin-left: 0;
+}
 
 @keyframes fadein {
   from {
