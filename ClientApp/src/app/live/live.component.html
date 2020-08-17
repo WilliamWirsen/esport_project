@@ -1,0 +1,123 @@
+<section class="hero is-small is-dark is-bold">
+  <h1 class="ta-c" *ngIf="liveGames.length > 0">Live right now!</h1>
+
+  <div class="live-games-header" *ngIf="isEmpty(liveGames)">
+    <h1 class="mt-6em ta-c">No games are live currently</h1>
+    <i>See the upcoming games below</i>
+  </div>
+  <div class="hero-body">
+    <div class="columns ">
+      <div class="live-finished column is-one-fifth" *ngIf="liveGames.finished !== undefined">
+        <article class="column" *ngFor="let live of liveGames.finished" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+          <a class="live-stream-link" href="{{live.streamUrl !== null ? live.linkUrl : '#'}}" target="_blank">
+            <div class="match-wrapper">
+              <div class="live-match-container">
+                <div class="opponent-one-details">
+                  <img class="team-live-upcoming-icon" src="{{live.opponentOne.imgUrl}}" alt="{{live.opponentOne.name}}" />
+                  <p class="ta-c live-name has-text-light is-size-7-tablet">{{live.opponentOne.name}}</p>
+                </div>
+                <div class="live-match-details live-match-upcoming-details">
+                  <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
+                  <span class="live-result">{{live.opponentOneResult}} - {{live.opponentTwoResult}}</span>
+                  <span class="live-status match-finished">Finished</span>
+                </div>
+                <div class="opponent-two-details">
+                  <img class="team-live-upcoming-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
+                  <p class="live-name ta-c has-text-light is-size-7-tablet">{{live.opponentTwo.name}}</p>
+                </div>
+              </div>
+            </div>
+          </a>
+          <div class="league-information-container">
+            <img class="live-league-logo" src="{{live.league.imgUrl}}" alt="{{live.league.name}}" />
+            <span class="is-size-7-tablet">{{live.name}} | {{live.season}} | {{live.videogame}}</span>
+          </div>
+        </article>
+      </div>
+      <div class="column">
+        <div class="columns is-multiline">
+          <ng-container *ngFor="let live of liveGames.running">
+            <article class="column" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+              <ng-container *ngIf="live.streamUrl !== null">
+                <figure class="image is-16by9 m-none">
+                  <iframe class="has-ratio" [src]="transform(live.streamUrl)"
+                          width="640" height="360"
+                          frameborder="0"
+                          scrolling="no"
+                          allowfullscreen="true">
+                  </iframe>
+                </figure>
+              </ng-container>
+              <a class="live-stream-link" href="{{live.streamUrl !== null ? live.linkUrl : '#'}}" target="_blank">
+                <div class="match-wrapper">
+                  <div class="live-match-container">
+                    <div class="opponent-one-details">
+                      <img class="team-live-icon" src="{{live.opponentOne.imgUrl}}" alt="{{live.opponentOne.name}}" />
+                      <p class="ta-c live-name has-text-light">{{live.opponentOne.name}}</p>
+                    </div>
+                    <div class="live-match-details">
+                      <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
+                      <span class="live-result">{{live.opponentOneResult}} - {{live.opponentTwoResult}}</span>
+                      <span class="live-begin-date">{{live.startDate | date: 'shortTime'}}</span>
+                      <span class="live-status" *ngIf="live.status !== 'finished' && live.status !== 'not_started'">Running</span>
+                      <span class="live-status match-finished" *ngIf="live.status === 'finished'">Finished</span>
+                      <span class="live-status match-finished" *ngIf="live.status === 'not_started'">Upcoming</span>
+                    </div>
+                    <div class="opponent-two-details">
+                      <img class="team-live-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
+                      <p class="live-name ta-c has-text-light">{{live.opponentTwo.name}}</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <div class="league-information-container">
+                <img class="live-league-logo" src="{{live.league.imgUrl}}" alt="{{live.league.name}}" />
+                <span class="is-size-7-tablet">{{live.name}} | {{live.season}} | {{live.videogame}}</span>
+              </div>
+            </article>
+          </ng-container>
+        </div>
+      </div>
+      <div [ngClass]="liveGames.running !== null ? 'column is-one-fifth': 'column'" *ngIf="liveGames.not_started !== undefined">
+        <div class="columns">
+          <article class="column" *ngFor="let live of liveGames.not_started" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
+            <ng-container *ngIf="live.streamUrl !== null && liveGames.running == null">
+              <figure class="image is-16by9 m-none">
+                <iframe class="has-ratio" [src]="transform(live.streamUrl)"
+                        width="640" height="360"
+                        frameborder="0"
+                        scrolling="no"
+                        allowfullscreen="true">
+                </iframe>
+              </figure>
+            </ng-container>
+            <a class="live-stream-link" href="{{live.streamUrl !== null ? live.linkUrl : '#'}}" target="_blank">
+              <div class="match-wrapper">
+                <div class="live-match-container">
+                  <div class="opponent-one-details">
+                    <img class="team-live-upcoming-icon" src="{{live.opponentOne.imgUrl}}" alt="{{live.opponentOne.name}}" />
+                    <p class="ta-c live-name has-text-light is-size-7-tablet">{{live.opponentOne.name}}</p>
+                  </div>
+                  <div class="live-match-details live-match-upcoming-details">
+                    <span *ngIf="live.matchType == 'best_of'" class="live-match-type">Best of <span class="number-of-games">{{live.numberOfGames}}</span></span>
+                    <span class="live-begin-date">{{live.startDate | date: 'shortTime'}}</span>
+                    <span class="live-status match-finished">Upcoming</span>
+                    <span class="not-live-status" *ngIf="!live.isActive">Not running</span>
+                  </div>
+                  <div class="opponent-two-details">
+                    <img class="team-live-upcoming-icon" src="{{live.opponentTwo.imgUrl}}" alt="{{live.opponentTwo.name}}" />
+                    <p class="live-name ta-c has-text-light is-size-7-tablet">{{live.opponentTwo.name}}</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <div class="league-information-container">
+              <img class="live-league-logo" src="{{live.league.imgUrl}}" alt="{{live.league.name}}" />
+              <span class="is-size-7-tablet">{{live.name}} | {{live.season}} | {{live.videogame}}</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,191 @@
+/*Color Scheme: #090979, #161a42 */
+
+.team-live-icon {
+  max-width: 86px;
+  align-self: center;
+}
+
+.team-live-upcoming-icon {
+  max-width: 40px;
+  align-self: center;
+}
+
+.match-wrapper {
+  background: rgb(217,249,255);
+  background: -moz-radial-gradient(circle, rgba(217,249,255,1) 0%, rgba(9,115,121,1) 80%, rgba(2,0,36,1) 100%);
+  background: -webkit-radial-gradient(circle, rgba(217,249,255,1) 0%, rgba(9,115,121,1) 80%, rgba(2,0,36,1) 100%);
+  background: radial-gradient(circle, rgba(217,249,255,1) 0%, rgba(9,115,121,1) 80%, rgba(2,0,36,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d9f9ff",endColorstr="#020024",GradientType=1);
+  padding: 0 2rem;
+}
+
+.live-match-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.live-cards-container > .row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+.live-stream-link, .live-stream-link:hover {
+  color: #0a0a0a;
+  text-decoration: none;
+}
+
+.opponent-one-details, .opponent-two-details {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  width: 100px;
+}
+
+.live-match-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 2rem 3rem 2rem 3rem;
+  text-align: center;
+  max-width: 8rem;
+}
+
+.live-match-upcoming-details {
+  margin: .5em;
+  justify-content: center;
+}
+
+.live-status {
+  color: #090874;
+  text-transform: uppercase;
+  font-size: .9rem;
+}
+
+.number-of-games {
+  font-weight: bold;
+}
+
+.not-live-status {
+  color: darkred;
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.match-not-finished {
+  position: relative;
+}
+
+
+.live-card iframe {
+  display: block;
+  width: 100%;
+}
+
+@-webkit-keyframes blinking {
+  0% {
+    -webkit-box-shadow: 0px 0px 11px 0px rgba(230,107,85,1);
+    -moz-box-shadow: 0px 0px 11px 0px rgba(230,107,85,1);
+    box-shadow: 0px 0px 11px 0px rgba(230,107,85,1);
+    box-shadow: 0px 0px 13px 0px rgba(237,31,31,1);
+    background: rgba(230,34,16,1);
+  }
+
+  50% {
+    -webkit-box-shadow: 0px 0px 11px 3px rgba(230,107,85,1);
+    -moz-box-shadow: 0px 0px 11px 3px rgba(230,107,85,1);
+    box-shadow: 0px 0px 11px 3px rgba(230,107,85,1);
+    box-shadow: 0px 0px 13px 3px rgba(237,31,31,1);
+    background: rgba(230,34,16,1);
+  }
+
+  100% {
+    -webkit-box-shadow: 0px 0px 11px 0px rgba(230,107,85,1);
+    -moz-box-shadow: 0px 0px 11px 0px rgba(230,107,85,1);
+    box-shadow: 0px 0px 11px 0px rgba(230,107,85,1);
+    box-shadow: 0px 0px 13px 0px rgba(237,31,31,1);
+    background: rgba(230,34,16,1);
+  }
+}
+
+.live-games-header {
+  margin: 5em 0;
+  padding: 5em;
+  text-align: center;
+}
+
+.live-result {
+  font-size: 1.5rem;
+}
+
+.live-status::after {
+  content: "";
+  height: 2px;
+  width: 2px;
+  border-radius: 100%;
+  background-color: red;
+}
+
+.opponent-one-details span, .opponent-two-details span {
+  text-align: center;
+}
+
+.league-information-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  background: rgb(2,0,36);
+  background: -moz-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
+  background: -webkit-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#00d4ff",GradientType=1);
+  height: 35px;
+}
+
+.live-league-logo {
+  align-self: center;
+  background: #f8f8f8;
+}
+
+.league-information-container span {
+  color: #f2f2f2;
+  align-self: center;
+  margin-left: 1rem;
+}
+
+.live-league-logo {
+  max-height: 35px;
+}
+
+
+.mb-5em {
+  margin-bottom: 5em;
+}
+
+.mb-10px {
+  margin-bottom: 10px;
+}
+
+.cp {
+  cursor: pointer;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.ta-c {
+  text-align: center;
+}
+
+.live-name {
+  font-size: 1rem;
+}
+
+.m-none {
+  margin: 0;
+}

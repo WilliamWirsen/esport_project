@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { Component, Inject, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../environments/environment';
+import { LiveComponent } from '../live/live.component';
 
 @Component({
   selector: 'app-home',
@@ -10,15 +10,13 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./home.component.css'],
 })
 
-//@Pipe({ name: 'safe' })
+export class HomeComponent implements OnInit {
+  @Input() live: LiveComponent;
 
-export class HomeComponent implements PipeTransform, OnInit {
   public matches: Matches[] = [];
   public leagues: Leagues[] = [];
   public games: Games[] = [];
-  public liveGames: any = [];
   today: number = Date.now();
-  private url: string;
 
   overwatch = [];
   rocketLeague = [];
@@ -36,18 +34,10 @@ export class HomeComponent implements PipeTransform, OnInit {
   siegeCounter = 0;
   lolCounter = 0;
 
-  public isEmpty(obj : object): boolean {
-      return Object.keys(obj).length === 0;    
-  }
 
-  ngOnInit(): void {
 
-    
-  }
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
-    const url = environment.production ? "esport.azurewebsites.net" : "localhost";
-    console.log(url);
-    this.url = url;
+
     //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
     //  this.matches = result;
     //  console.log(this.matches);
@@ -80,18 +70,6 @@ export class HomeComponent implements PipeTransform, OnInit {
       }
       return counter;
     }
-
-
-    http.get<LiveGames[]>(baseUrl + 'api/SampleData/GetLiveMatches').subscribe(result => {
-      this.liveGames = result;
-      console.log("--- Live games ---")
-      console.log(this.liveGames);
-      console.log("--- end live games ---")
-      console.log(this.liveGames.length);
-      this.liveGames = groupBy(this.liveGames, 'status');
-
-      console.log(this.liveGames);
-    }, error => console.error(error));
 
     this.games = [
       {
@@ -131,50 +109,14 @@ export class HomeComponent implements PipeTransform, OnInit {
         img: "../../assets/r6-siege.png"
       }
     ]
-    var groupBy = function (xs, key) {
-      return xs.reduce(function (rv, x) {
-        (rv[x[key]] = rv[x[key]] || []).push(x);
-        return rv;
-      }, {});
-    };
-
-    
 
   }
-  
-
-
-  transform(url) {
-    if (url.includes("twitch"))
-      url = url + "&parent=" + this.url +"&muted=true";
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  ngOnInit(): void {
   }
-
-  
 }
 
 
-interface LiveGames {
-  id: number;
-  startDate: string;
-  name: string;
-  is_active: boolean;
-  match_type: string;
-  stream_url: string;
-  draw: false;
-  forfeit: boolean;
-  opponentOne: object;
-  opponentTwo: object;
-  league: object;
-  opponentOneResult: number;
-  opponentTwoResult: number;
-  season: string;
-  numberOfGames: number;
-  status: string;
-  not_started: any[];
-  running: any[];
-  finished: any[];
-}
+
 interface Games {
   id: string;
   name: string;
