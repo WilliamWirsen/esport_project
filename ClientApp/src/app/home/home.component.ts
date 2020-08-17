@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements PipeTransform, OnInit {
   public games: Games[] = [];
   public liveGames: any = [];
   today: number = Date.now();
+  private url: string;
 
   overwatch = [];
   rocketLeague = [];
@@ -34,19 +36,22 @@ export class HomeComponent implements PipeTransform, OnInit {
   siegeCounter = 0;
   lolCounter = 0;
 
-  running = [];
-  finished = [];
-  upcoming = [];
-  
+  public isEmpty(obj : object): boolean {
+      return Object.keys(obj).length === 0;    
+  }
 
   ngOnInit(): void {
+
+    
   }
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
+    const url = environment.production ? "esport.azurewebsites.net" : "localhost";
+    console.log(url);
+    this.url = url;
     //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
     //  this.matches = result;
     //  console.log(this.matches);
     //}, error => console.error(error));    
-
     http.get<Leagues[]>(baseUrl + 'api/SampleData/GetLeagueMatches').subscribe(result => {
       this.leagues = result;
       console.log("--- Leagues ---");
@@ -133,13 +138,15 @@ export class HomeComponent implements PipeTransform, OnInit {
       }, {});
     };
 
+    
 
   }
   
 
+
   transform(url) {
     if (url.includes("twitch"))
-      url = url + "&parent=localhost&muted=true";
+      url = url + "&parent=" + this.url +"&muted=true";
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

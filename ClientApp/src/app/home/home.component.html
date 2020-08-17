@@ -4,9 +4,9 @@
     <section class="hero is-small is-dark is-bold">
       <h1 class="ta-c" *ngIf="liveGames.length > 0">Live right now!</h1>
 
-      <div class="live-games-header" *ngIf="liveGames.length <= 0">
+      <div class="live-games-header" *ngIf="isEmpty(liveGames)">
         <h1 class="mt-6em ta-c">No games are live currently</h1>
-        <i>Upcoming see the upcoming games below</i>
+        <i>See the upcoming games below</i>
       </div>
       <div class="hero-body">
         <div class="columns">

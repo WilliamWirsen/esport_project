@@ -12,7 +12,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { LeaguesComponent } from './leagues/leagues.component'; 
 import { LeagueComponent } from './league/league.component'; 
 import { MatchComponent } from './match/match.component';
-import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { TestComponent } from './test/test.component';
     LeaguesComponent,
     LeagueComponent,
     MatchComponent,
-    TestComponent,
     HomeComponent
   ],
   imports: [
