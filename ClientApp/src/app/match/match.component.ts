@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { groupBy } from 'rxjs/operators';
 
 @Component({
   selector: 'match',
@@ -37,8 +36,6 @@ export class MatchComponent implements OnInit, OnDestroy {
     this.loadingTeamsSpinner = true;
   }
 
-
-
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id']; // (+) converts string 'id' to a number
@@ -62,10 +59,14 @@ export class MatchComponent implements OnInit, OnDestroy {
       console.log(this.isLoaded);
     });
   }
+      
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 }
+
+
+
 
 interface Team {
   ID: number

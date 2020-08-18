@@ -1,4 +1,3 @@
-using EnumsNET;
 using esport.Models;
 using esport.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -6,13 +5,10 @@ using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http.Headers;
 
 namespace esport.Controllers
 {
@@ -198,7 +194,6 @@ namespace esport.Controllers
             return allLeagues;
 
         }
-
         private List<UpcomingMatches> GetMatches()
         {
             List<UpcomingMatches> allUpcomingMatches = new List<UpcomingMatches>();

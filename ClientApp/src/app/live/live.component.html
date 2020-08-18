@@ -79,7 +79,7 @@
         </div>
       </div>
       <div [ngClass]="liveGames.running !== null ? 'column is-one-fifth': 'column'" *ngIf="liveGames.not_started !== undefined">
-        <div class="columns">
+        <div class="columns is-multiline">
           <article class="column" *ngFor="let live of liveGames.not_started" ngClass="{{live.status == 'finished' ? 'match-finished' : 'match-not-finished'}}">
             <ng-container *ngIf="live.streamUrl !== null && liveGames.running == null">
               <figure class="image is-16by9 m-none">

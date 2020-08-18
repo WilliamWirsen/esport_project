@@ -1,8 +1,4 @@
-.match-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+
 .pl-0 {
     padding-left: 0;
 }
@@ -65,4 +61,30 @@
   to {
     opacity: 1;
   }
+}
+.df-jc-ma {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+
+.match-header {
+  background: rgb(217,249,255);
+  background: -moz-radial-gradient(circle, rgba(217,249,255,1) 0%, rgba(9,115,121,1) 80%, rgba(2,0,36,1) 100%);
+  background: -webkit-radial-gradient(circle, rgba(217,249,255,1) 0%, rgba(9,115,121,1) 80%, rgba(2,0,36,1) 100%);
+  background: radial-gradient(circle, rgba(217,249,255,1) 0%, rgba(9,115,121,1) 80%, rgba(2,0,36,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d9f9ff",endColorstr="#020024",GradientType=1);
+}
+.match-info {
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    background-color:rgba(73, 73, 73, 0.27) 
+}
+.match-header-container {
+    display: flex;
+    justify-content: center;
+}
+.match-header-container img {
+  max-height: 350px;
 }

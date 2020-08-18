@@ -1,13 +1,31 @@
 <main class="main-body">
   <div *ngIf="teams[0] !== undefined">
+    <div class="match-header columns ">
+      <div class="column df-jc-ma is-hidden-touch">
+        <figure>
+          <img [src]="match.opponent1.imgUrl" alt="Alternate Text" />
+        </figure>
+      </div>
+      <div class="column is-one-fifth-desktop is-full-mobile match-info has-text-light">
+        <h4 class="center-align is-size-4">{{match.opponent1.name}} vs {{match.opponent2.name}}</h4>
+        <p class="is-size-4">{{match.beginAt | date: 'medium'}}</p>
+        <p *ngIf="match.status == 3" class="is-size-5">Hasn't started yet</p>
+        <p *ngIf="match.matchType == 0" class="is-size-5"><strong class="has-text-weight-semibold has-text-light">Best of {{match.numberOfGames}}</strong></p>
+        <p *ngIf="match.matchType == 1" class="is-size-5"><strong class="has-text-weight-semibold has-text-light">Custom {{match.numberOfGames}}</strong></p>
+        <p *ngIf="match.matchType == 2" class="is-size-5"><strong class="has-text-weight-semibold has-text-light">First to {{match.numberOfGames}}</strong></p>
+        <p *ngIf="match.matchType == 3" class="is-size-5"><strong class="has-text-weight-semibold has-text-light">Overtime | Best of {{match.numberOfGames}}</strong></p>
+        <img *ngIf="match.league.imgUrl !== null" [src]="match.league.imgUrl" alt="{{match.league.name + ' logo'}}" />
+      </div>
+      <figure class="column df-jc-ma is-hidden-touch">
+        <figure>
+          <img [src]="match.opponent2.imgUrl" alt="Alternate Text" />
+        </figure>
+      </figure>
+
+    </div>
     <div class="container">
       <div class="match-container mt-6em">
-        <div class="match-header">
-          <h4 class="center-align">{{match.name}}</h4>
-          <p>{{match.beginAt | date: 'medium'}}</p>
-          <img *ngIf="match.league.imgUrl !== null" [src]="match.league.imgUrl" alt="{{match.league.name + ' logo'}}" />
-        </div>
-        <div class="columns">          
+        <div class="columns">
           <ng-container *ngFor="let team of teams; index as i">
             <div class="match-opponent-container column">
               <div class="page-header">
@@ -15,7 +33,7 @@
               </div>
               <div class="columns is-multiline">
                 <div class="column is-full df-jc" *ngIf="loadingTeamsSpinner">
-                  <div class="preloader-wrapper big active" >
+                  <div class="preloader-wrapper big active">
                     <div class="spinner-layer spinner-blue-only">
                       <div class="circle-clipper left">
                         <div class="circle"></div>
@@ -55,35 +73,21 @@
                       <div class="media">
                         <div class="media-content">
                           <span class="tag is-danger" *ngIf="player.role !== null">{{player.role}}</span>
-                          <p class="title is-4" *ngIf="player.firstName !== null || player.lastName !== null">{{player.firstName + ' ' + player.lastName}}</p>
+                          <p class="title is-size-5" *ngIf="player.firstName !== null || player.lastName !== null">{{player.firstName + ' ' + player.lastName}}</p>
                           <p class="subtitle is-6 mt-0">{{player.name}}</p>
                         </div>
                       </div>
 
                       <div class="content">
                         <ul class="ml-0">
-                          <li><strong>Nationality:</strong> {{player.nationality !== null ? player.nationality : '-'}}</li>
-                          <li><strong>Hometown:</strong> {{player.homeTown !== null ? player.homeTown : '-'}}</li>
-                          <li><strong>Age:</strong> {{player.birthYear !== null ? today - player.birthYear + ' years old' : '-'}}</li>
-                        </ul>                        
+                          <li class="is-size-7"><strong>Nationality:</strong> {{player.nationality !== null ? player.nationality : '-'}}</li>
+                          <li class="is-size-7"><strong>Hometown:</strong> {{player.homeTown !== null ? player.homeTown : '-'}}</li>
+                          <li class="is-size-7"><strong>Age:</strong> {{player.birthYear !== null ? today - player.birthYear + ' years old' : '-'}}</li>
+                        </ul>
                         <br>
-                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                       </div>
                     </div>
                   </div>
-                  <!--<div class="card" [attr.data-player-id]="player.id">
-                    <div class="card-image">
-                      <img [src]="player.imgUrl" alt="{{player.name}}">
-                      <span class="card-title">{{player.firstName !== null || player.lastName !== null ? player.firstName + " " + player.lastName + " | " : ''}} <small> "{{player.name}}"</small></span>
-                    </div>
-                    <div class="card-content">
-                      <ul class="pl-0">
-                        <li>A: <small>{{player.birthYear !== null ? today - player.birthYear + ' years old' : '-'}}</small></li>
-                        <li>N: <small>{{player.nationality !== null ? player.nationality : '-'}}</small></li>
-                        <li>H: <small>{{player.homeTown !== null ? player.homeTown : '-'}}</small></li>
-                      </ul>
-                    </div>
-                  </div>-->
                 </article>
               </div>
             </div>

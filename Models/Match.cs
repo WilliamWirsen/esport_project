@@ -1,9 +1,8 @@
 ﻿using esport.Models.Enums;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace esport.Models
 {
@@ -24,6 +23,7 @@ namespace esport.Models
         public List<Game> Games { get; set; }
         public Live Live { get; set; }
         public string EmbeddedUrl { get; set; }
+
         public MatchType? MatchType { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string OfficialStreamUrl { get; set; }

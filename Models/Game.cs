@@ -1,5 +1,7 @@
 ﻿using esport.Models.Enums;
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace esport.Models
 {
@@ -15,6 +17,7 @@ namespace esport.Models
         public DateTime? EndDate { get; set; }
         public bool Finished { get; set; }
         public bool Forfeight { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public MatchStatusType Status { get; set; }
         public string VideoUrl { get; set; }
         public Winner Winner { get; set; }

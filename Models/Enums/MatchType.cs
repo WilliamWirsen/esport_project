@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace esport.Models.Enums
 {
-    [Newtonsoft.Json.JsonConverter(typeof(JsonStringEnumConverter))]
 
     public enum MatchType
     {
