@@ -98,7 +98,7 @@ namespace esport.Controllers
         [HttpGet("[action]")]
         public IActionResult GetLeagueMatches()
         {
-            List<UpcomingMatches> matches = new List<UpcomingMatches>();
+            List<UpcomingMatch> matches = new List<UpcomingMatch>();
             List<League> leagues = new List<League>();
             if (!_cache.TryGetValue("Matches", out matches))
             {
@@ -126,7 +126,9 @@ namespace esport.Controllers
             if (leagues.Any() && matches.Any())
             {
                 List<League> leagueList = new List<League>();
-                foreach (var league in leagues)
+
+                var leagueMatches = matches.GroupBy(x => x.League.Id).ToList();
+                foreach(var league in leagues)
                 {
                     leagueList.Add(new League
                     {
@@ -136,13 +138,10 @@ namespace esport.Controllers
                         Slug = league.Slug,
                         Url = league.Url,
                         Videogame = league.Videogame,
-                        Matches = matches.Where(x => x.League.Id == league.Id).ToList()
+                        Matches = leagueMatches.Where(x => x.Key == league.Id).SelectMany(y => y).ToList()
                     });
                 }
-                //foreach (var league in leagueList.GroupBy(x => x.Videogame.Id).Select(group => new { Metric = group.Key, Count = group.Count() }).OrderBy(x => x.Metric)) {
-                //    Console.WriteLine("{0} {1}", league.Metric, league.Count);
-                //}
-                leagueList = leagueList.Where(x => x.Matches.Any()).ToList();
+                leagueList = leagueList.GroupBy(x => x.Id).Select(y => y.First()).Where(x => x.Matches.Count > 0).ToList();
                 return Ok(leagueList);
             }
             return BadRequest();
@@ -194,9 +193,9 @@ namespace esport.Controllers
             return allLeagues;
 
         }
-        private List<UpcomingMatches> GetMatches()
+        private List<UpcomingMatch> GetMatches()
         {
-            List<UpcomingMatches> allUpcomingMatches = new List<UpcomingMatches>();
+            List<UpcomingMatch> allUpcomingMatches = new List<UpcomingMatch>();
             JToken content = null;
             var index = 0;
             do
@@ -219,9 +218,9 @@ namespace esport.Controllers
             return allUpcomingMatches;
         }
 
-        private List<UpcomingMatches> MapUpcomingMatch(JToken content)
+        private List<UpcomingMatch> MapUpcomingMatch(JToken content)
         {
-            List<UpcomingMatches> upcomingGames = new List<UpcomingMatches>();
+            List<UpcomingMatch> upcomingGames = new List<UpcomingMatch>();
             foreach (var item in content)
             {
                 if (!item["opponents"].HasValues)
@@ -271,7 +270,7 @@ namespace esport.Controllers
                     Tier = (string)item["serie"]["tier"],
                     BeginDate = (DateTime)item["serie"]["begin_at"],
                 };
-                var upcomingGame = new UpcomingMatches
+                var upcomingGame = new UpcomingMatch
                 {
                     ID = (int)item["id"],
                     StartDate = (string)item["begin_at"],
@@ -448,6 +447,12 @@ namespace esport.Controllers
                             WinnerId = (int?)content["serie"]["winner_id"],
                             WinnerType = content["serie"]["winner_type"].ToObject<WinnerType?>()
                         }
+                    };
+                    match.Videogame = new Videogame()
+                    {
+                        Id = (int)content["videogame"]["id"],
+                        Name = (string)content["videogame"]["name"],
+                        Slug = (string)content["videogame"]["slug"]
                     };
                     match.Slug = (string)content["slug"];
                     match.Status = content["status"].ToObject<MatchStatusType>();

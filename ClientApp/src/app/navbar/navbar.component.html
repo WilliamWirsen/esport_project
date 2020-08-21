@@ -11,31 +11,45 @@
     </a>
   </div>
   <div class="navbar-menu">
-    <a class="navbar-item" [routerLink]='["/"]'  [routerLinkActive]='["is-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+    <a class="navbar-item" [routerLink]='["/"]' [routerLinkActive]='["is-active"]' [routerLinkActiveOptions]='{ exact: true }'>
       <span class='icon'>
         <i class="fas fa-home" aria-hidden="true"></i>
       </span>
       <span>Home</span>
     </a>
-    <a class="navbar-item" [routerLink]='["/counter"]'  [routerLinkActive]='["is-active"]'>
+    <a class="navbar-item" [routerLink]='["/counter"]' [routerLinkActive]='["is-active"]'>
       <span class='icon'>
         <i class="fas fa-calculator"></i>
       </span>
       <span>Counter</span>
     </a>
-    <a  [routerLinkActive]='["is-active"]' class="navbar-item" [routerLink]='["/leagues"]' >
+    <a [routerLinkActive]='["is-active"]' class="navbar-item" [routerLink]='["/leagues"]'>
       <span class='icon'>
         <i class="fas fa-chess-king"></i>
       </span>
       <span>Leagues</span>
     </a>
-    <div class="navbar-item has-dropdown">
-      <a class="navbar-link">
-        Docs
-      </a>
 
+    <div class="navbar-item has-dropdown is-hoverable">
+      <!-- Other navbar items -->
+      <a class="navbar-link">
+        Leagues
+      </a>
       <div class="navbar-dropdown">
-        <!-- Other navbar items -->
+        <a class="navbar-item" style="display:flex; justify-content: space-between;">
+          <img class="game-logo icon" src="../../assets/overwatch.png" alt="overwatch logo" />
+          <span>Overwatch</span>
+        </a>
+        <a class="navbar-item">
+          Leagues
+        </a>
+        <a class="navbar-item">
+          Leagues
+        </a>
+        <hr class="navbar-divider">
+        <a class="navbar-item">
+          Leagues
+        </a>
       </div>
     </div>
 

@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   public leagues: Leagues[] = [];
   public games: Games[] = [];
   today: number = Date.now();
+  public showLoader: boolean;
 
   overwatch = [];
   rocketLeague = [];
@@ -37,7 +38,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
-
+    this.showLoader = true;
     //http.get<Matches[]>(baseUrl + 'api/SampleData/GetMatches').subscribe(result => {
     //  this.matches = result;
     //  console.log(this.matches);
@@ -62,6 +63,8 @@ export class HomeComponent implements OnInit {
       this.dotaCounter = countMatches(this.dota2, this.dotaCounter);
       this.siegeCounter = countMatches(this.siege, this.siegeCounter);
       this.lolCounter = countMatches(this.lol, this.lolCounter);
+
+      this.showLoader = false;
     }, error => console.error(error));
 
     var countMatches = function (array, counter) {

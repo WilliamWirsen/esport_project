@@ -10,7 +10,7 @@ namespace esport.Models
     {
         public League()
         {
-            Matches = new List<UpcomingMatches>();
+            Matches = new List<UpcomingMatch>();
         }
         public int Id { get; set; }
         public string ImgUrl { get; set; }
@@ -18,7 +18,7 @@ namespace esport.Models
         public string Slug { get; set; }
         public string Url { get; set; }
         public Game Videogame { get; set; }
-        public List<UpcomingMatches> Matches { get; set; }
+        public List<UpcomingMatch> Matches { get; set; }
         public DateTime ModifiedDate { get; set; }
 
     }

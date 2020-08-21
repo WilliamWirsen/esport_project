@@ -37,6 +37,7 @@
       </div>
       <div class="is-full">
         <div class="game-header" [ngClass]="{'mb-10px' : dota2.length < 1}">
+          <progress *ngIf="showLoader" class="progress is-small is-info" max="100">15%</progress>
           <div class="game-header-left">
             <img class="game-logo" src="../../assets/dota-2.png" alt="Dota 2 logo" />
             <span>Dota 2</span>

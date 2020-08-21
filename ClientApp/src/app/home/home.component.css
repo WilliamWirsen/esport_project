@@ -217,6 +217,12 @@ h1 {
   padding: 1.5rem;
   border-radius: 0 0 100px 0;
   height: 85px;
+  position: relative;
+}
+.game-header progress {
+    position:absolute;
+    top: -10px;
+    left: 0;
 }
 
 .game-header-left {
