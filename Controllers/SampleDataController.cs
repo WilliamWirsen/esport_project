@@ -1,13 +1,16 @@
 using esport.Models;
 using esport.Models.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using MoreLinq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace esport.Controllers
@@ -18,6 +21,8 @@ namespace esport.Controllers
     {
         private static string _token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
         private IMemoryCache _cache;
+        private HttpContext context = null;
+        public string _baseUrl = "http://localhost:52419/"; 
         public SampleDataController(IMemoryCache memoryCache)
         {
             _cache = memoryCache;
@@ -127,9 +132,40 @@ namespace esport.Controllers
             {
                 List<League> leagueList = new List<League>();
 
-                var leagueMatches = matches.GroupBy(x => x.League.Id).ToList();
-                foreach(var league in leagues)
+                var leagueMatches = matches.DistinctBy(x => x.ID).GroupBy(x => x.League.Id).ToList();
+                //var baseUrl = Environment.CurrentDirectory + @"\src\app\assets\";
+                var baseUrl = _baseUrl += "assets/";
+                foreach (var league in leagues)
                 {
+                    var videogame = league.Videogame;
+                    videogame.Type = (GameType)Enum.ToObject(typeof(GameType), videogame.Id);
+                    switch (videogame.Type)
+                    {
+                        case GameType.Overwatch:
+                            videogame.ImgUrl = Path.Combine(baseUrl, "overwatch.png");
+                            break;
+                        case GameType.LeagueOfLegends:
+                            videogame.ImgUrl = Path.Combine(baseUrl, "league-of-legends.png");
+                            break;
+                        case GameType.CounterStrike:
+                            videogame.ImgUrl = Path.Combine(baseUrl, "cs-go.png");
+                            break;
+                        case GameType.CallofDutyModernWarfare:
+                            videogame.ImgUrl = Path.Combine(baseUrl, "cod-mw.png");
+                            break;
+                        case GameType.RocketLeague:
+                            videogame.ImgUrl = Path.Combine(baseUrl, "rl.png");
+                            break;
+                        case GameType.Dota2:
+                            videogame.ImgUrl = Path.Combine(baseUrl, "dota-2.png");
+                            break;
+                        case GameType.RainbowSixSiege:
+                            videogame.ImgUrl = Path.Combine(baseUrl, "r6-siege.png");
+                            break;
+                        default:
+                            break;
+                    }
+
                     leagueList.Add(new League
                     {
                         Id = league.Id,
@@ -137,8 +173,9 @@ namespace esport.Controllers
                         Name = league.Name,
                         Slug = league.Slug,
                         Url = league.Url,
-                        Videogame = league.Videogame,
-                        Matches = leagueMatches.Where(x => x.Key == league.Id).SelectMany(y => y).ToList()
+                        Videogame = videogame,
+                        Matches = leagueMatches.Where(x => x.Key == league.Id).SelectMany(y => y).ToList(),
+                        VideogameName = videogame.Name
                     });
                 }
                 leagueList = leagueList.GroupBy(x => x.Id).Select(y => y.First()).Where(x => x.Matches.Count > 0).ToList();
@@ -172,7 +209,7 @@ namespace esport.Controllers
                             Name = (string)item["name"],
                             Slug = (string)item["videogame"]["slug"],
                             Url = (string)item["url"],
-                            Videogame = new Game
+                            Videogame = new Videogame
                             {
                                 Id = (int)item["videogame"]["id"],
                                 Name = (string)item["videogame"]["name"],
@@ -183,11 +220,12 @@ namespace esport.Controllers
                     }
                     allLeagues.AddRange(tempLeagues);
                     index++;
-                } else
+                }
+                else
                 {
                     System.Diagnostics.Debug.WriteLine("Connection not possible");
                     return null;
-                }                
+                }
             } while (content.HasValues);
 
             return allLeagues;
@@ -237,7 +275,7 @@ namespace esport.Controllers
                     Name = (string)item["league"]["name"],
                     Slug = (string)item["videogame"]["slug"],
                     Url = (string)item["league"]["url"],
-                    Videogame = new Game
+                    Videogame = new Videogame
                     {
                         Id = (int)item["videogame"]["id"],
                         Name = (string)item["videogame"]["name"],
@@ -410,7 +448,7 @@ namespace esport.Controllers
                         Url = (string)content["live"]["url"]
                     };
                     match.EmbeddedUrl = (string)content["live_embeded_url"];
-                    match.MatchType = content["match_type"].ToObject<MatchType>();
+                    match.MatchType = content["match_type"].ToObject<esport.Models.Enums.MatchType>();
                     match.ModifiedDate = (DateTime)content["modified_at"];
                     match.Name = (string)content["name"];
                     match.NumberOfGames = (int)content["number_of_games"];

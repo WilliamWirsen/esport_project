@@ -5,17 +5,19 @@ namespace esport.Models.Enums
     public enum GameType
     {
         [Description("overwatch")]
-        Overwatch,
+        Overwatch = 14,
         [Description("cs-go")]
-        CounterStrike,
+        CounterStrike = 3,
         [Description("dota-2")]
-        Dota2,
+        Dota2 = 4,
         [Description("league-of-legends")]
-        LeagueOfLegends,
+        LeagueOfLegends = 1,
         [Description("rl")]
-        RocketLeague,
+        RocketLeague = 22,
         [Description("cod-mw")]
-        CallofDutyModernWarfare
+        CallofDutyModernWarfare,
+        [Description("rb6")]
+        RainbowSixSiege
     }
     public static class TypeGroups
     {
@@ -26,7 +28,9 @@ namespace esport.Models.Enums
             GameType.Dota2,
             GameType.LeagueOfLegends,
             GameType.CallofDutyModernWarfare,
-            GameType.RocketLeague
+            GameType.RocketLeague,
+            GameType.RainbowSixSiege
+
         };
     }
 }

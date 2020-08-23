@@ -1,0 +1,38 @@
+<h1 class="ta-c">Upcoming games this month</h1>
+<div class="container">
+  <div class="mb-5em">
+    <ng-container *ngFor="let item of leagues | keyvalue">
+      <div class="game-header ">
+        <div class="game-header-left">
+          <img class="game-logo" [src]="item.value[0].videogame.imgUrl" alt="{{item.value[0].videogame.name}} logo" />
+          <span class="game-header-title">{{item.key}}</span>
+        </div>
+        <div class="game-header-right">
+          <span class="tag is-info is-medium">{{item.value.totalMatches}}</span>
+        </div>
+      </div>
+      <div *ngFor="let league of item.value; index as j">
+        <div class="schedule-body">
+          <div class="league-wrapper">
+              <div class="league-header">
+                <img class="league-logo" src="{{league.imgUrl}}" alt="{{league.name}}" />
+                <a routerLink="/league/{{league.id}}" routerLinkActive="active">{{league.name}}</a>
+              </div>
+              
+          </div>
+        </div>
+        <div *ngFor="let match of league.matches; index as i">
+          <div class="matches-schedule">
+              <div class="columns cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
+                <div class="match-opponent column"><span>{{match.opponentOne.name}}</span></div>
+                <div class="scheduled-start column"><span>{{match.startDate | date:'medium'}}</span></div>
+                <div class="match-opponent column"><span>{{match.opponentTwo.name}}</span></div>
+                <div ng-if="item.value[j].matches.length > 1"><hr /></div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<!--<p *ngIf="!matches"><em>Loading...</em></p>-->

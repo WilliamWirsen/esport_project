@@ -13,6 +13,7 @@ import { LeaguesComponent } from './leagues/leagues.component';
 import { LeagueComponent } from './league/league.component'; 
 import { MatchComponent } from './match/match.component';
 import { LiveComponent } from './live/live.component';
+import { ScheduledMatchesComponent } from './scheduled-matches/scheduled-matches.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LiveComponent } from './live/live.component';
     LeagueComponent,
     MatchComponent,
     HomeComponent,
-    LiveComponent
+    LiveComponent,
+    ScheduledMatchesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
