@@ -3,6 +3,7 @@
   <div class="mb-5em">
     <ng-container *ngFor="let item of leagues | keyvalue">
       <div class="game-header ">
+        <progress *ngIf="showLoader" class="progress is-small is-info" max="100">15%</progress>
         <div class="game-header-left">
           <img class="game-logo" [src]="item.value[0].videogame.imgUrl" alt="{{item.value[0].videogame.name}} logo" />
           <span class="game-header-title">{{item.key}}</span>
