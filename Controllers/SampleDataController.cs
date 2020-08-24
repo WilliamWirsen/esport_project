@@ -21,8 +21,7 @@ namespace esport.Controllers
     {
         private static string _token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
         private IMemoryCache _cache;
-        private HttpContext context = null;
-        public string _baseUrl = "http://localhost:52419/"; 
+        public string _baseUrl = "http://localhost:52419/"; //TODO: Change this to dynamic baseUrl
         public SampleDataController(IMemoryCache memoryCache)
         {
             _cache = memoryCache;
