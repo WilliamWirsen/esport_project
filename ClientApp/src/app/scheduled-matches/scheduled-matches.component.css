@@ -356,3 +356,9 @@ hr {
 .m-none {
   margin: 0;
 }
+.mb-1em {
+    margin-bottom: 1em;
+}
+.asc {
+    align-self:center;
+}

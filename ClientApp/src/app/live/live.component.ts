@@ -12,15 +12,13 @@ import { environment } from '../../environments/environment';
 export class LiveComponent implements OnInit {
   public liveGames: any = [];
   private url: string;
-
   public isEmpty(obj: object): boolean {
     return Object.keys(obj).length === 0;
   }
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sanitizer: DomSanitizer) {
     const url = environment.production ? "esport.azurewebsites.net" : "localhost";
     this.url = url;
-
     http.get<LiveGames[]>(baseUrl + 'api/SampleData/GetLiveMatches').subscribe(result => {
       this.liveGames = result;
       console.log("--- Live games ---")
@@ -39,14 +37,11 @@ export class LiveComponent implements OnInit {
       }, {});
     };
   }
-
   transform(url) {
     if (url.includes("twitch"))
       url = url + "&parent=" + this.url + "&muted=true";
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
-
-
   ngOnInit(): void {
   }
 

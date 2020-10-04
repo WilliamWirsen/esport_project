@@ -21,10 +21,14 @@ namespace esport.Controllers
     {
         private static string _token = "56ItzsN1iV0bXtXi6s3lT5sM6ejvfxQctMSxCfybyQl1feUUjZY";
         private IMemoryCache _cache;
-        public string _baseUrl = "http://localhost:52419/"; //TODO: Change this to dynamic baseUrl
+        public string _baseUrl = "http://localhost:52419/";
+        private MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions();
         public SampleDataController(IMemoryCache memoryCache)
         {
             _cache = memoryCache;
+            _cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(15));
         }
 
         [HttpGet("[action]")]
@@ -98,33 +102,43 @@ namespace esport.Controllers
             return BadRequest();
 
         }
-
         [HttpGet("[action]")]
-        public IActionResult GetLeagueMatches()
+        public IActionResult GetLeagueMatches(string toDate = null)
         {
+            var isNewInterval = false;
+            var defaultToDate = DateTime.Now.AddMonths(1);
+            _cache.TryGetValue("FilterToDateUpcomingGames", out DateTime savedToDate);
+            if (savedToDate.CompareTo(DateTime.MinValue) != 0 ? (savedToDate.ToShortDateString() == toDate) : string.IsNullOrEmpty(toDate))
+            {
+                toDate = defaultToDate.ToShortDateString();
+                isNewInterval = false;
+            }
+            else {
+                if (string.IsNullOrEmpty(toDate))
+                {
+                    toDate = defaultToDate.ToShortDateString();
+                    _cache.Set("FilterToDateUpcomingGames", DateTime.MinValue);
+                }
+                _cache.Set("FilterToDateUpcomingGames", toDate);
+
+                isNewInterval = true;
+            }
+
             List<UpcomingMatch> matches = new List<UpcomingMatch>();
             List<League> leagues = new List<League>();
-            if (!_cache.TryGetValue("Matches", out matches))
+            if (!_cache.TryGetValue("Matches", out matches) || isNewInterval)
             {
-                matches = GetMatches();
-
-                // Set cache options.
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    // Keep in cache for this time, reset time if accessed.
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(15));
+                matches = GetMatches(DateTime.Parse(toDate));
 
                 // Save data in cache.
-                _cache.Set("Matches", matches, cacheEntryOptions);
+                _cache.Set("Matches", matches, _cacheEntryOptions);
             }
-            if (!_cache.TryGetValue("Leagues", out leagues))
+            if (!_cache.TryGetValue("Leagues", out leagues) || isNewInterval)
             {
                 leagues = GetLeagues();
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    // Keep in cache for this time, reset time if accessed.
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(15));
 
                 // Save data in cache.
-                _cache.Set("Leagues", leagues, cacheEntryOptions);
+                _cache.Set("Leagues", leagues, _cacheEntryOptions);
             }
 
             if (leagues.Any() && matches.Any())
@@ -230,14 +244,16 @@ namespace esport.Controllers
             return allLeagues;
 
         }
-        private List<UpcomingMatch> GetMatches()
+        private List<UpcomingMatch> GetMatches(DateTime? toDate = null)
         {
             List<UpcomingMatch> allUpcomingMatches = new List<UpcomingMatch>();
             JToken content = null;
             var index = 0;
+            if (!toDate.HasValue)
+                toDate = DateTime.Now.AddMonths(1);
             do
             {
-                var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token={_token}&filter[detailed_stats]=true&page={index}&per_page=100&range[begin_at]=" + DateTime.Now + "," + DateTime.Now.AddMonths(1));
+                var client = new RestClient($"https://api.pandascore.co//matches/upcoming?token={_token}&filter[detailed_stats]=true&page={index}&per_page=100&range[begin_at]=" + DateTime.Now + "," + toDate);
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
                 if (response.IsSuccessful)
@@ -305,7 +321,7 @@ namespace esport.Controllers
                     Description = (string)item["serie"]["description"],
                     FullName = (string)item["serie"]["full_name"],
                     Tier = (string)item["serie"]["tier"],
-                    BeginDate = (DateTime)item["serie"]["begin_at"],
+                    BeginDate = ((DateTime)item["serie"]["begin_at"]).ToLocalTime(),
                 };
                 var upcomingGame = new UpcomingMatch
                 {
@@ -407,9 +423,9 @@ namespace esport.Controllers
 
                     var games = content.SelectTokens("games[*]").Select(game => new Game()
                     {
-                        BeginDate = (DateTime?)game["begin_at"],
+                        BeginDate = ((DateTime?)game["begin_at"]).HasValue ? ((DateTime?)game["begin_at"]).Value.ToLocalTime() : (DateTime?)null,
                         Complete = (bool)game["complete"],
-                        EndDate = (DateTime?)game["end_at"],
+                        EndDate = ((DateTime?)game["end_at"]).HasValue ? ((DateTime?)game["end_at"]).Value.ToLocalTime() : (DateTime?)null,
                         Finished = (bool)game["finished"],
                         Forfeight = (bool)game["forfeit"],
                         Id = (int)game["id"],
@@ -425,7 +441,7 @@ namespace esport.Controllers
 
                     }).ToList();
 
-                    match.BeginAt = DateTime.Parse((string)content["begin_at"]);
+                    match.BeginAt = (DateTime.Parse((string)content["begin_at"])).ToLocalTime();
                     match.Draw = (bool)content["draw"];
                     //match.EndAt = (DateTime)item["end_at"];
                     match.Forfeit = (bool)content["forfeit"];
@@ -495,9 +511,9 @@ namespace esport.Controllers
                     match.Status = content["status"].ToObject<MatchStatusType>();
                     match.Tournament = new Tournament()
                     {
-                        BeginDate = (DateTime)content["tournament"]["begin_at"],
+                        BeginDate = ((DateTime)content["tournament"]["begin_at"]).ToLocalTime(),
                         Id = (int)content["tournament"]["id"],
-                        EndDate = (DateTime?)content["tournament"]["end_at"],
+                        EndDate = ((DateTime?)content["tournament"]["end_at"]).HasValue ? ((DateTime?)content["tournament"]["end_at"]).Value.ToLocalTime() : (DateTime?)null,
                         IsLiveSupported = (bool)content["tournament"]["live_supported"],
                         LeagueId = (int)content["tournament"]["league_id"],
                         ModifiedDate = (DateTime)content["tournament"]["modified_at"],

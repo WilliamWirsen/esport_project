@@ -1,8 +1,19 @@
-<h1 class="ta-c">Upcoming games this month</h1>
 <div class="container">
+  <div class="columns">
+    <h1 class="ta-c column is-four-fifths">Upcoming games this month</h1>
+    <div class="column asc">
+      <div class="select">
+        <select [(ngModel)]="filterUpcomingGames" (ngModelChange)="FilterUpcomingGames($event)">
+          <option value="one_month">One month</option>
+          <option value="one_week">One week</option>
+          <option value="one_day">One day</option>
+        </select>
+      </div>
+    </div>
+  </div>
   <div class="mb-5em">
     <ng-container *ngFor="let item of leagues | keyvalue">
-      <div class="game-header ">
+      <div class="game-header" (click)="ToggleSelect(item.value[0].slug)" id="{{item.value[0].slug}}-header">
         <progress *ngIf="showLoader" class="progress is-small is-info" max="100">15%</progress>
         <div class="game-header-left">
           <img class="game-logo" [src]="item.value[0].videogame.imgUrl" alt="{{item.value[0].videogame.name}} logo" />
@@ -12,24 +23,26 @@
           <span class="tag is-info is-medium">{{item.value.totalMatches}}</span>
         </div>
       </div>
-      <div *ngFor="let league of item.value; index as j">
-        <div class="schedule-body">
-          <div class="league-wrapper">
+      <div id="{{item.value[0].slug}}-container">
+        <div *ngFor="let league of item.value; index as j">
+          <div class="schedule-body">
+            <div class="league-wrapper">
               <div class="league-header">
                 <img class="league-logo" src="{{league.imgUrl}}" alt="{{league.name}}" />
                 <a routerLink="/league/{{league.id}}" routerLinkActive="active">{{league.name}}</a>
               </div>
-              
+
+            </div>
           </div>
-        </div>
-        <div *ngFor="let match of league.matches; index as i">
-          <div class="matches-schedule">
+          <div *ngFor="let match of league.matches; index as i">
+            <div class="matches-schedule">
               <div class="columns cp w100" [attr.data-match-id]="match.id" [routerLink]="['/match', match.id]" routerLinkActive="active">
                 <div class="match-opponent column"><span>{{match.opponentOne.name}}</span></div>
                 <div class="scheduled-start column"><span>{{match.startDate | date:'medium'}}</span></div>
                 <div class="match-opponent column"><span>{{match.opponentTwo.name}}</span></div>
                 <div ng-if="item.value[j].matches.length > 1"><hr /></div>
               </div>
+            </div>
           </div>
         </div>
       </div>
